@@ -11,8 +11,14 @@ jobs:
           architecture: 'x64'
       - uses: actions/checkout@v1
       - name: Init
+        working-directory: ./src
         run: make init
       - name: Dev init
+        working-directory: ./src
         run: make dev
       - name: Test
+        working-directory: ./src
         run: make test
+      - name: Install
+        working-directory: ./src
+        run: make install
