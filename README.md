@@ -1,4 +1,4 @@
-# ledger-compliance-py
+# ledger-compliance-py [![License](https://img.shields.io/github/license/codenotary/immudb4j)](LICENSE)
 ## Official Python SDK for interacting with CodeNotary Ledger Compliance.
 
 ## Contents
