@@ -31,3 +31,5 @@ test:
 coverage:
 	$(COVERAGE) run -m pytest tests
 
+install:
+	python setup.py install
