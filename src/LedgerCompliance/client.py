@@ -43,6 +43,17 @@ class Client:
 			signature=resp.signature.signature, 
 			publicKey=resp.signature.publicKey
 		)
+	
+	def currentRoot(self):
+		resp=self.__stub.CurrentRoot(empty_request.Empty())
+		self.__rs=resp.payload
+		return types.LCRoot(
+			index=resp.payload.index,
+			root=resp.payload.root,
+			signature=resp.signature.signature, 
+			publicKey=resp.signature.publicKey
+		)
+		
 
 	def set(self, key: bytes, value: bytes):
 		request = schema_pb2.KeyValue(key=key, value=value)
@@ -105,3 +116,7 @@ class Client:
 			proof=proof,
 			verified=verified
 			)
+	def health(self):
+		resp=self.__stub.Health(empty_request.Empty())
+		return types.HealthInfo(status=resp.status, version=resp.version)
+

@@ -19,23 +19,28 @@ class LCItem:
 
 @dataclass
 class Proof:
-    index: bytes
-    leaf: bytes 
-    root: bytes
-    at: int
-    inclusionPath: bytes
-    consistencyPath: bytes
+	index: bytes
+	leaf: bytes 
+	root: bytes
+	at: int
+	inclusionPath: bytes
+	consistencyPath: bytes
     
 @dataclass
 class SafeSetResponse:
-    index: int
-    verified: bool
-    proof: Proof
+	index: int
+	verified: bool
+	proof: Proof
     
 @dataclass
 class SafeGetResponse:
-    index: int
-    key: bytes
-    value: bytes
-    verified: bool
-    proof: Proof
+	index: int
+	key: bytes
+	value: bytes
+	verified: bool
+	proof: Proof
+    
+@dataclass    
+class HealthInfo:
+	status: bool
+	version: str
