@@ -62,6 +62,26 @@ value=client.get(b"key")
 ```
 
 ### Encoding
-To avoid encoding issues, both key and value are bytes array, not string. You have to ```encode``` the data before writing and ```decode``` after reading.
+To avoid encoding issues, both key and value are byte array, not string. You have to ```encode``` the data before writing and ```decode``` after reading.
 
 ### Safe read/write
+
+The real strength of the Ledger Compliance is the proof that the data is not been tampered. The ''safe'' version of ```get``` and ```set``` are designed 
+to verify, client side, the proof returned by the server.
+
+To safely store a key/value pair, simply call the ```safeSet``` method. The returned value has a field (called ```verified```) which testify the 
+correctness of the insert. In the same way, the ```safeGet``` guarantees that the returned data has not been tampered with.
+
+```python
+resp=client.safeSet(b"key,  b"value")
+if resp.verified:
+    print("Data correctly stored ad index:",resp.index)
+    print("Proof is:",resp.proof)
+ 
+ resp=client.safeGet(b"key")
+ if resp.verified:
+    print("Value is:",resp.value,"at index:",resp.index)
+    print("Proof is:",resp.proof)
+```
+### Multithreading / multiprocessing
+The library is not reentrant. If used in a multiprocess application, each running process  must have its own instance.
