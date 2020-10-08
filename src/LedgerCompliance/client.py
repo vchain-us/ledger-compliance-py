@@ -101,11 +101,6 @@ class Client:
 		request=schema_pb2.SafeGetOptions(key=key, rootIndex=index)
 		msg = self.__stub.SafeGet(request)
 		
-		print("MSG")
-		print(msg)
-		print("ROOT")
-		print(self.__rs)
-		
 		# message verification
 		digest = proofs.digest(msg.item.index, key, msg.item.value)
 		verified = proofs.verify(msg.proof, digest, self.__rs)
