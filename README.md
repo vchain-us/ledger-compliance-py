@@ -33,4 +33,35 @@ TBD
 
 ## Quickstart
 
+A simple example is provided in the "examples" subdirectory.
+
 ## Step by step guide
+
+### Creating the client
+The first step is to instantiate a LC client. You only need one ''API Key'', and the IP address (and the port) of the Ledger Compliance Server.
+
+```python
+import LedgerCompliance.client
+
+apikey="fgyozystagmmfalppyttvlqxyuwawgdwmmsd"
+host="192.168.199.199"
+port=3324
+
+client=LedgerCompliance.client.Client(apikey,host,port)
+client.connect()
+```
+
+### Using get/set to store/retrieve data
+
+Once the connection is in place, you can use the ```set``` method to store key/value pairs, and the ```get``` method to
+retrieve the data:
+
+```python
+client.set(b"key", b"value")
+value=client.get(b"key")
+```
+
+### Encoding
+To avoid encoding issues, both key and value are bytes array, not string. You have to ```encode``` the data before writing and ```decode``` after reading.
+
+### Safe read/write
