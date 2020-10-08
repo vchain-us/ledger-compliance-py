@@ -1,0 +1,7 @@
+[run]
+source = LedgerCompliance
+omit = LedgerCompliance/schema/*
+
+[report]
+omit = LedgerCompliance/schema/*
+

@@ -81,7 +81,7 @@ class Client:
 		index=schema_pb2.Index(index=self.__rs.index)
 		request=schema_pb2.SafeSetOptions(kv=kv, rootIndex=index)
 		msg=self.__stub.SafeSet(request) # msg type is "Proof"
-		
+
 		# message verification
 		digest = proofs.digest(msg.index, key, value)
 		verified = proofs.verify(msg, digest, self.__rs)
@@ -100,6 +100,11 @@ class Client:
 		index=schema_pb2.Index(index=self.__rs.index)
 		request=schema_pb2.SafeGetOptions(key=key, rootIndex=index)
 		msg = self.__stub.SafeGet(request)
+		
+		print("MSG")
+		print(msg)
+		print("ROOT")
+		print(self.__rs)
 		
 		# message verification
 		digest = proofs.digest(msg.item.index, key, msg.item.value)

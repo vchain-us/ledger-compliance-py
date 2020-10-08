@@ -3,6 +3,7 @@ SHELL := /bin/bash
 PROTOC ?= $(shell which protoc)
 PYTEST ?= python -m pytest
 PIP ?= pip
+COVERAGE ?= coverage
 
 PROTO_DIR := proto
 PROTO_FILE := ${PROTO_DIR}/lc.proto ${PROTO_DIR}/schema.proto
@@ -18,3 +19,15 @@ schema:
 		${PROTO_FILE}
 	./fixup.sh
 	
+init:
+	$(PIP) install -r requirements.txt
+	
+dev:
+	$(PIP) install -r requirements-dev.txt
+
+test:
+	$(PYTEST) -vv --color=yes tests/
+
+coverage:
+	$(COVERAGE) run -m pytest tests
+
