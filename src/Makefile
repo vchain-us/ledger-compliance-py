@@ -1,8 +1,8 @@
 SHELL := /bin/bash
 
 PROTOC ?= $(shell which protoc)
-PYTEST ?= python -m pytest
-PIP ?= pip
+PYTEST ?= python3 -m pytest
+PIP ?= pip3
 COVERAGE ?= coverage
 
 PROTO_DIR := proto
@@ -14,7 +14,7 @@ GRPC_OUT_DIR := LedgerCompliance/schema
 
 .PHONY: schema
 schema:
-	python -m grpc_tools.protoc -I ${PROTO_DIR} \
+	python3 -m grpc_tools.protoc -I ${PROTO_DIR} \
 		--python_out=${SCHEMA_OUT_DIR} --grpc_python_out=${GRPC_OUT_DIR} \
 		${PROTO_FILE}
 	./fixup.sh
@@ -32,4 +32,4 @@ coverage:
 	$(COVERAGE) run -m pytest tests
 
 install:
-	python setup.py install
+	python3 setup.py install
