@@ -7,6 +7,7 @@ from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
 
 from LedgerCompliance import header_manipulator_client_interceptor as interceptor
 from . import types, proofs
+import time
 
 class Client:
 	def __init__(self, apikey: str, host: str, port: int):
@@ -56,14 +57,18 @@ class Client:
 		
 
 	def set(self, key: bytes, value: bytes):
-		request = schema_pb2.KeyValue(key=key, value=value)
+		now=int(time.time())
+		content = schema_pb2.Content(timestamp=now, payload=value)
+		request = schema_pb2.KeyValue(key=key, value=content.SerializeToString())
 		ret=self.__stub.Set(request)
 		return types.LCIndex(index=ret.index)
 	
 	def get(self, key:bytes):
 		request = schema_pb2.Key(key=key)
 		ret=self.__stub.Get(request)
-		return types.LCItem(key=ret.key, value=ret.value, index=ret.index)
+		content=schema_pb2.Content()
+		content.ParseFromString(ret.value)
+		return types.LCItem(key=ret.key, value=content.payload, index=ret.index)
 	
 	def _mkProof(self, msg):
 		proof=types.Proof(
@@ -77,7 +82,9 @@ class Client:
 		return proof
 	
 	def safeSet(self, key: bytes, value: bytes):
-		kv = schema_pb2.KeyValue(key=key, value=value)
+		now=int(time.time())
+		content = schema_pb2.Content(timestamp=now, payload=value)
+		kv = schema_pb2.KeyValue(key=key, value=content.SerializeToString())
 		index=schema_pb2.Index(index=self.__rs.index)
 		request=schema_pb2.SafeSetOptions(kv=kv, rootIndex=index)
 		msg=self.__stub.SafeSet(request) # msg type is "Proof"
@@ -109,14 +116,27 @@ class Client:
 			# Update root
 			self.__rs=schema_pb2.RootIndex(index=msg.proof.at, root=msg.proof.root)
 		proof=self._mkProof(msg.proof)
+		content=schema_pb2.Content()
+		content.ParseFromString(msg.item.value)
 		return types.SafeGetResponse(
 			index=msg.item.index,
 			key=msg.item.key,
-			value=msg.item.value,
+			value=content.payload,
+			timestamp=content.timestamp,
 			proof=proof,
 			verified=verified
 			)
 	def health(self):
 		resp=self.__stub.Health(empty_request.Empty())
 		return types.HealthInfo(status=resp.status, version=resp.version)
+	
+	def setBatch(self, kv: dict):
+		_KVs = []
+		now=int(time.time())
+		for i in kv.keys():
+			content=schema_pb2.Content(timestamp=now, payload=kv[i])
+			_KVs.append(schema_pb2.KeyValue( key=i, value=content.SerializeToString()) )
+		request = schema_pb2.KVList(KVs=_KVs)
+		ret=self.__stub.SetBatch(request)
+		return ret
 

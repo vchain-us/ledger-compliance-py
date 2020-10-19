@@ -37,6 +37,7 @@ class SafeGetResponse:
 	index: int
 	key: bytes
 	value: bytes
+	timestamp: int
 	verified: bool
 	proof: Proof
     
