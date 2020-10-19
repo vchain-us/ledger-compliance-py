@@ -36,6 +36,41 @@ class LcServiceStub(object):
                 request_serializer=schema__pb2.SafeGetOptions.SerializeToString,
                 response_deserializer=schema__pb2.SafeItem.FromString,
                 )
+        self.SetBatch = channel.unary_unary(
+                '/lc.schema.LcService/SetBatch',
+                request_serializer=schema__pb2.KVList.SerializeToString,
+                response_deserializer=schema__pb2.Index.FromString,
+                )
+        self.GetBatch = channel.unary_unary(
+                '/lc.schema.LcService/GetBatch',
+                request_serializer=schema__pb2.KeyList.SerializeToString,
+                response_deserializer=schema__pb2.ItemList.FromString,
+                )
+        self.Scan = channel.unary_unary(
+                '/lc.schema.LcService/Scan',
+                request_serializer=schema__pb2.ScanOptions.SerializeToString,
+                response_deserializer=schema__pb2.ItemList.FromString,
+                )
+        self.History = channel.unary_unary(
+                '/lc.schema.LcService/History',
+                request_serializer=schema__pb2.Key.SerializeToString,
+                response_deserializer=schema__pb2.ItemList.FromString,
+                )
+        self.ZAdd = channel.unary_unary(
+                '/lc.schema.LcService/ZAdd',
+                request_serializer=schema__pb2.ZAddOptions.SerializeToString,
+                response_deserializer=schema__pb2.Index.FromString,
+                )
+        self.SafeZAdd = channel.unary_unary(
+                '/lc.schema.LcService/SafeZAdd',
+                request_serializer=schema__pb2.SafeZAddOptions.SerializeToString,
+                response_deserializer=schema__pb2.Proof.FromString,
+                )
+        self.ZScan = channel.unary_unary(
+                '/lc.schema.LcService/ZScan',
+                request_serializer=schema__pb2.ZScanOptions.SerializeToString,
+                response_deserializer=schema__pb2.ItemList.FromString,
+                )
         self.CurrentRoot = channel.unary_unary(
                 '/lc.schema.LcService/CurrentRoot',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
@@ -51,13 +86,20 @@ class LcServiceStub(object):
                 request_serializer=lc__pb2.ReportOptions.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 )
+        self.SendData = channel.stream_stream(
+                '/lc.schema.LcService/SendData',
+                request_serializer=lc__pb2.Data.SerializeToString,
+                response_deserializer=lc__pb2.Response.FromString,
+                )
 
 
 class LcServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Set(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """immudb primitives
+        setters and getters
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -80,8 +122,53 @@ class LcServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CurrentRoot(self, request, context):
+    def SetBatch(self, request, context):
+        """batch
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetBatch(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Scan(self, request, context):
+        """scanners
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def History(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ZAdd(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SafeZAdd(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ZScan(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CurrentRoot(self, request, context):
+        """mixed
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -93,6 +180,13 @@ class LcServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ReportTamper(self, request, context):
+        """ledger compliance extensions
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendData(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -121,6 +215,41 @@ def add_LcServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.SafeGetOptions.FromString,
                     response_serializer=schema__pb2.SafeItem.SerializeToString,
             ),
+            'SetBatch': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetBatch,
+                    request_deserializer=schema__pb2.KVList.FromString,
+                    response_serializer=schema__pb2.Index.SerializeToString,
+            ),
+            'GetBatch': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetBatch,
+                    request_deserializer=schema__pb2.KeyList.FromString,
+                    response_serializer=schema__pb2.ItemList.SerializeToString,
+            ),
+            'Scan': grpc.unary_unary_rpc_method_handler(
+                    servicer.Scan,
+                    request_deserializer=schema__pb2.ScanOptions.FromString,
+                    response_serializer=schema__pb2.ItemList.SerializeToString,
+            ),
+            'History': grpc.unary_unary_rpc_method_handler(
+                    servicer.History,
+                    request_deserializer=schema__pb2.Key.FromString,
+                    response_serializer=schema__pb2.ItemList.SerializeToString,
+            ),
+            'ZAdd': grpc.unary_unary_rpc_method_handler(
+                    servicer.ZAdd,
+                    request_deserializer=schema__pb2.ZAddOptions.FromString,
+                    response_serializer=schema__pb2.Index.SerializeToString,
+            ),
+            'SafeZAdd': grpc.unary_unary_rpc_method_handler(
+                    servicer.SafeZAdd,
+                    request_deserializer=schema__pb2.SafeZAddOptions.FromString,
+                    response_serializer=schema__pb2.Proof.SerializeToString,
+            ),
+            'ZScan': grpc.unary_unary_rpc_method_handler(
+                    servicer.ZScan,
+                    request_deserializer=schema__pb2.ZScanOptions.FromString,
+                    response_serializer=schema__pb2.ItemList.SerializeToString,
+            ),
             'CurrentRoot': grpc.unary_unary_rpc_method_handler(
                     servicer.CurrentRoot,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
@@ -135,6 +264,11 @@ def add_LcServiceServicer_to_server(servicer, server):
                     servicer.ReportTamper,
                     request_deserializer=lc__pb2.ReportOptions.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'SendData': grpc.stream_stream_rpc_method_handler(
+                    servicer.SendData,
+                    request_deserializer=lc__pb2.Data.FromString,
+                    response_serializer=lc__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -215,6 +349,125 @@ class LcService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def SetBatch(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SetBatch',
+            schema__pb2.KVList.SerializeToString,
+            schema__pb2.Index.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetBatch(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/GetBatch',
+            schema__pb2.KeyList.SerializeToString,
+            schema__pb2.ItemList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Scan(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/Scan',
+            schema__pb2.ScanOptions.SerializeToString,
+            schema__pb2.ItemList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def History(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/History',
+            schema__pb2.Key.SerializeToString,
+            schema__pb2.ItemList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ZAdd(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ZAdd',
+            schema__pb2.ZAddOptions.SerializeToString,
+            schema__pb2.Index.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SafeZAdd(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SafeZAdd',
+            schema__pb2.SafeZAddOptions.SerializeToString,
+            schema__pb2.Proof.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ZScan(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ZScan',
+            schema__pb2.ZScanOptions.SerializeToString,
+            schema__pb2.ItemList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def CurrentRoot(request,
             target,
             options=(),
@@ -262,5 +515,22 @@ class LcService(object):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ReportTamper',
             lc__pb2.ReportOptions.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendData(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/lc.schema.LcService/SendData',
+            lc__pb2.Data.SerializeToString,
+            lc__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

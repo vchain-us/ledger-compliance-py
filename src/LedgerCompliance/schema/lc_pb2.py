@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z4github.com/vchain-us/ledger-compliance/server/schema',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x08lc.proto\x12\tlc.schema\x1a\x0cschema.proto\x1a\x1bgoogle/protobuf/empty.proto\"8\n\x0cTamperReport\x12\r\n\x05index\x18\x01 \x01(\x04\x12\x0b\n\x03key\x18\x02 \x01(\x0c\x12\x0c\n\x04root\x18\x03 \x01(\x0c\"f\n\rReportOptions\x12(\n\x07payload\x18\x01 \x01(\x0b\x32\x17.lc.schema.TamperReport\x12+\n\tsignature\x18\x02 \x01(\x0b\x32\x18.immudb.schema.Signature2\xc1\x03\n\tLcService\x12\x36\n\x03Set\x12\x17.immudb.schema.KeyValue\x1a\x14.immudb.schema.Index\"\x00\x12\x30\n\x03Get\x12\x12.immudb.schema.Key\x1a\x13.immudb.schema.Item\"\x00\x12@\n\x07SafeSet\x12\x1d.immudb.schema.SafeSetOptions\x1a\x14.immudb.schema.Proof\"\x00\x12\x43\n\x07SafeGet\x12\x1d.immudb.schema.SafeGetOptions\x1a\x17.immudb.schema.SafeItem\"\x00\x12<\n\x0b\x43urrentRoot\x12\x16.google.protobuf.Empty\x1a\x13.immudb.schema.Root\"\x00\x12\x41\n\x06Health\x12\x16.google.protobuf.Empty\x1a\x1d.immudb.schema.HealthResponse\"\x00\x12\x42\n\x0cReportTamper\x12\x18.lc.schema.ReportOptions\x1a\x16.google.protobuf.Empty\"\x00\x42\x36Z4github.com/vchain-us/ledger-compliance/server/schemab\x06proto3'
+  serialized_pb=b'\n\x08lc.proto\x12\tlc.schema\x1a\x0cschema.proto\x1a\x1bgoogle/protobuf/empty.proto\"8\n\x0cTamperReport\x12\r\n\x05index\x18\x01 \x01(\x04\x12\x0b\n\x03key\x18\x02 \x01(\x0c\x12\x0c\n\x04root\x18\x03 \x01(\x0c\"f\n\rReportOptions\x12(\n\x07payload\x18\x01 \x01(\x0b\x32\x17.lc.schema.TamperReport\x12+\n\tsignature\x18\x02 \x01(\x0b\x32\x18.immudb.schema.Signature\"6\n\tDataValue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\x0c\"f\n\x04\x44\x61ta\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05msgID\x18\x02 \x01(\x03\x12\x0e\n\x06\x64\x62Name\x18\x03 \x01(\t\x12\x11\n\ttableName\x18\x04 \x01(\t\x12\x11\n\toperation\x18\x05 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x06 \x01(\x0c\"~\n\x08Response\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\r\n\x05msgID\x18\x03 \x01(\x03\x12#\n\x05proof\x18\x04 \x01(\x0b\x32\x14.immudb.schema.Proof\x12!\n\x04root\x18\x05 \x01(\x0b\x32\x13.immudb.schema.Root2\xab\x07\n\tLcService\x12\x36\n\x03Set\x12\x17.immudb.schema.KeyValue\x1a\x14.immudb.schema.Index\"\x00\x12\x30\n\x03Get\x12\x12.immudb.schema.Key\x1a\x13.immudb.schema.Item\"\x00\x12@\n\x07SafeSet\x12\x1d.immudb.schema.SafeSetOptions\x1a\x14.immudb.schema.Proof\"\x00\x12\x43\n\x07SafeGet\x12\x1d.immudb.schema.SafeGetOptions\x1a\x17.immudb.schema.SafeItem\"\x00\x12\x39\n\x08SetBatch\x12\x15.immudb.schema.KVList\x1a\x14.immudb.schema.Index\"\x00\x12=\n\x08GetBatch\x12\x16.immudb.schema.KeyList\x1a\x17.immudb.schema.ItemList\"\x00\x12=\n\x04Scan\x12\x1a.immudb.schema.ScanOptions\x1a\x17.immudb.schema.ItemList\"\x00\x12\x38\n\x07History\x12\x12.immudb.schema.Key\x1a\x17.immudb.schema.ItemList\"\x00\x12:\n\x04ZAdd\x12\x1a.immudb.schema.ZAddOptions\x1a\x14.immudb.schema.Index\"\x00\x12\x42\n\x08SafeZAdd\x12\x1e.immudb.schema.SafeZAddOptions\x1a\x14.immudb.schema.Proof\"\x00\x12?\n\x05ZScan\x12\x1b.immudb.schema.ZScanOptions\x1a\x17.immudb.schema.ItemList\"\x00\x12<\n\x0b\x43urrentRoot\x12\x16.google.protobuf.Empty\x1a\x13.immudb.schema.Root\"\x00\x12\x41\n\x06Health\x12\x16.google.protobuf.Empty\x1a\x1d.immudb.schema.HealthResponse\"\x00\x12\x42\n\x0cReportTamper\x12\x18.lc.schema.ReportOptions\x1a\x16.google.protobuf.Empty\"\x00\x12\x34\n\x08SendData\x12\x0f.lc.schema.Data\x1a\x13.lc.schema.Response(\x01\x30\x01\x42\x36Z4github.com/vchain-us/ledger-compliance/server/schemab\x06proto3'
   ,
   dependencies=[schema__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -112,10 +112,188 @@ _REPORTOPTIONS = _descriptor.Descriptor(
   serialized_end=226,
 )
 
+
+_DATAVALUE = _descriptor.Descriptor(
+  name='DataValue',
+  full_name='lc.schema.DataValue',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='lc.schema.DataValue.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='lc.schema.DataValue.type', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='lc.schema.DataValue.value', index=2,
+      number=3, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=228,
+  serialized_end=282,
+)
+
+
+_DATA = _descriptor.Descriptor(
+  name='Data',
+  full_name='lc.schema.Data',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='lc.schema.Data.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='msgID', full_name='lc.schema.Data.msgID', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dbName', full_name='lc.schema.Data.dbName', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='tableName', full_name='lc.schema.Data.tableName', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='operation', full_name='lc.schema.Data.operation', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='data', full_name='lc.schema.Data.data', index=5,
+      number=6, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=284,
+  serialized_end=386,
+)
+
+
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='lc.schema.Response',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='lc.schema.Response.status', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='msg', full_name='lc.schema.Response.msg', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='msgID', full_name='lc.schema.Response.msgID', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='proof', full_name='lc.schema.Response.proof', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='root', full_name='lc.schema.Response.root', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=388,
+  serialized_end=514,
+)
+
 _REPORTOPTIONS.fields_by_name['payload'].message_type = _TAMPERREPORT
 _REPORTOPTIONS.fields_by_name['signature'].message_type = schema__pb2._SIGNATURE
+_RESPONSE.fields_by_name['proof'].message_type = schema__pb2._PROOF
+_RESPONSE.fields_by_name['root'].message_type = schema__pb2._ROOT
 DESCRIPTOR.message_types_by_name['TamperReport'] = _TAMPERREPORT
 DESCRIPTOR.message_types_by_name['ReportOptions'] = _REPORTOPTIONS
+DESCRIPTOR.message_types_by_name['DataValue'] = _DATAVALUE
+DESCRIPTOR.message_types_by_name['Data'] = _DATA
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TamperReport = _reflection.GeneratedProtocolMessageType('TamperReport', (_message.Message,), {
@@ -132,6 +310,27 @@ ReportOptions = _reflection.GeneratedProtocolMessageType('ReportOptions', (_mess
   })
 _sym_db.RegisterMessage(ReportOptions)
 
+DataValue = _reflection.GeneratedProtocolMessageType('DataValue', (_message.Message,), {
+  'DESCRIPTOR' : _DATAVALUE,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.DataValue)
+  })
+_sym_db.RegisterMessage(DataValue)
+
+Data = _reflection.GeneratedProtocolMessageType('Data', (_message.Message,), {
+  'DESCRIPTOR' : _DATA,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.Data)
+  })
+_sym_db.RegisterMessage(Data)
+
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
+  'DESCRIPTOR' : _RESPONSE,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.Response)
+  })
+_sym_db.RegisterMessage(Response)
+
 
 DESCRIPTOR._options = None
 
@@ -142,8 +341,8 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=229,
-  serialized_end=678,
+  serialized_start=517,
+  serialized_end=1456,
   methods=[
   _descriptor.MethodDescriptor(
     name='Set',
@@ -186,9 +385,79 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='SetBatch',
+    full_name='lc.schema.LcService.SetBatch',
+    index=4,
+    containing_service=None,
+    input_type=schema__pb2._KVLIST,
+    output_type=schema__pb2._INDEX,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBatch',
+    full_name='lc.schema.LcService.GetBatch',
+    index=5,
+    containing_service=None,
+    input_type=schema__pb2._KEYLIST,
+    output_type=schema__pb2._ITEMLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Scan',
+    full_name='lc.schema.LcService.Scan',
+    index=6,
+    containing_service=None,
+    input_type=schema__pb2._SCANOPTIONS,
+    output_type=schema__pb2._ITEMLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='History',
+    full_name='lc.schema.LcService.History',
+    index=7,
+    containing_service=None,
+    input_type=schema__pb2._KEY,
+    output_type=schema__pb2._ITEMLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ZAdd',
+    full_name='lc.schema.LcService.ZAdd',
+    index=8,
+    containing_service=None,
+    input_type=schema__pb2._ZADDOPTIONS,
+    output_type=schema__pb2._INDEX,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SafeZAdd',
+    full_name='lc.schema.LcService.SafeZAdd',
+    index=9,
+    containing_service=None,
+    input_type=schema__pb2._SAFEZADDOPTIONS,
+    output_type=schema__pb2._PROOF,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ZScan',
+    full_name='lc.schema.LcService.ZScan',
+    index=10,
+    containing_service=None,
+    input_type=schema__pb2._ZSCANOPTIONS,
+    output_type=schema__pb2._ITEMLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='CurrentRoot',
     full_name='lc.schema.LcService.CurrentRoot',
-    index=4,
+    index=11,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
     output_type=schema__pb2._ROOT,
@@ -198,7 +467,7 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Health',
     full_name='lc.schema.LcService.Health',
-    index=5,
+    index=12,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
     output_type=schema__pb2._HEALTHRESPONSE,
@@ -208,10 +477,20 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ReportTamper',
     full_name='lc.schema.LcService.ReportTamper',
-    index=6,
+    index=13,
     containing_service=None,
     input_type=_REPORTOPTIONS,
     output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendData',
+    full_name='lc.schema.LcService.SendData',
+    index=14,
+    containing_service=None,
+    input_type=_DATA,
+    output_type=_RESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
