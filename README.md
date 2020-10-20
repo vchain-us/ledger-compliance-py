@@ -60,6 +60,7 @@ retrieve the data:
 client.set(b"key", b"value")
 value=client.get(b"key")
 ```
+Please note that the value is serialized with a timestamp, so you can always tell when the insert was made.
 
 ### Encoding
 To avoid encoding issues, both key and value are byte array, not string. You have to ```encode``` the data before writing and ```decode``` after reading.
@@ -83,5 +84,40 @@ if resp.verified:
     print("Value is:",resp.value,"at index:",resp.index)
     print("Proof is:",resp.proof)
 ```
+
+### Batch set/get
+If you need to quickly insert or retrieve many values, you can call the batch set and get methods. Batch operation are tipically orders of magnitude faster than multiple scalar inserts.
+
+The setBatch has a dictionary as a parameters: simply fill the dict with you key/values pair and call setBatch to have it safely stored. Please note that both the keys and the values have to be bytes array.
+```python
+manyvalues={}
+for j in range(0,100):
+	k="KEY_"+get_random_string(8)
+	v="VALUE_"+get_random_string(64)
+	manyvalues[k.encode('ascii')]=v.encode('ascii')
+client.setBatch(manyvalues)
+```
+
+To retrieve multiple values, populate an array with wanted keys, then call getBatch:
+```python
+keys=[b"key1", b"key2"]
+client.getBatch(keys)
+```
+
+### Scan
+You can scan LC database by prefix, getting keys (and values) based on a given prefix of the key. For this, use method scan.
+
+```python
+client.scan(prefix, offset, limit, reverse, deep)
+```
+The method return a list of key/values having `prefix` as key prefix. Offset and limit are used to ket only a subset (for paginating large arrays); the boolean reverse is used to specify sorting.
+
+### History
+
+To get the history of updates to a key, use `history` method: given a key, returns a list of all subsequent modification, each with timestamp and index.
+```python
+print(client.History(b"key1"))
+```
+
 ### Multithreading / multiprocessing
 The library is not reentrant. If used in a multiprocess application, each running process  must have its own instance.
