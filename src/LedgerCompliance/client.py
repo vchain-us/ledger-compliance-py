@@ -68,7 +68,7 @@ class Client:
 		ret=self.__stub.Get(request)
 		content=schema_pb2.Content()
 		content.ParseFromString(ret.value)
-		return types.LCItem(key=ret.key, value=content.payload, index=ret.index)
+		return types.LCItem(key=ret.key, value=content.payload, index=ret.index, timestamp=content.timestamp)
 	
 	def _mkProof(self, msg):
 		proof=types.Proof(
@@ -117,6 +117,7 @@ class Client:
 			self.__rs=schema_pb2.RootIndex(index=msg.proof.at, root=msg.proof.root)
 		proof=self._mkProof(msg.proof)
 		content=schema_pb2.Content()
+		print(msg)
 		content.ParseFromString(msg.item.value)
 		return types.SafeGetResponse(
 			index=msg.item.index,
@@ -138,5 +139,40 @@ class Client:
 			_KVs.append(schema_pb2.KeyValue( key=i, value=content.SerializeToString()) )
 		request = schema_pb2.KVList(KVs=_KVs)
 		ret=self.__stub.SetBatch(request)
-		return ret
+		return types.LCIndex(index=ret.index)
+	
+	def _parseItemList(self,items):
+		values=[]
+		for r in items:
+			content=schema_pb2.Content()
+			content.ParseFromString(r.value)
+			values.append(types.LCItem(
+				key=r.key, 
+				value=content.payload, 
+				index=r.index, 
+				timestamp=content.timestamp
+			))
+		return values
+
+	def getBatch(self, keys: list):
+		klist = [schema_pb2.Key(key=k) for k in keys]
+		request = schema_pb2.KeyList(keys=klist)
+		ret=self.__stub.GetBatch(request)
+		return self._parseItemList(ret.items)
+	
+	def scan(self, prefix:bytes, offset:bytes=b'', limit:int=0, reverse:bool=False, deep:bool=False):
+		request = schema_pb2.ScanOptions(
+			prefix=prefix,
+			offset=offset,
+			limit=limit,
+			reverse=reverse,
+			deep=deep
+			)
+		ret=self.__stub.Scan(request)
+		return self._parseItemList(ret.items)
+	
+	def history(self, key: bytes):
+		request = schema_pb2.Key(key=key)
+		ret=self.__stub.History(request)
+		return self._parseItemList(ret.items)
 

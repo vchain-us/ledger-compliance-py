@@ -17,6 +17,8 @@ def test_connect():
 		a.connect()
 	except grpc._channel._InactiveRpcError as e:
 		pass
+	a.InterceptInterceptor()
+	a.connect()
 	
 def test_health():
 	apikey="justatest"
@@ -61,3 +63,32 @@ def test_tamperGet():
 	a.LoadFakeRoot('set')
 	resp=a.safeGet(b"gorilla")
 	assert not resp.verified
+	
+def test_batch():
+	apikey="justatest"
+	host="127.0.0.1"
+	port=3324
+	a=mock_lc.MockClient(apikey,host,port)
+	kv={b"cat": b"meow", b"dog": b"woff"}
+	a.setBatch(kv)
+	kk={b"cat", b"dog"}
+	resp=a.getBatch(kk)
+	for i in resp:
+		assert kv[i.key]==i.value
+
+def test_scan():
+	apikey="justatest"
+	host="127.0.0.1"
+	port=3324
+	a=mock_lc.MockClient(apikey,host,port)
+	kv={b"cat1": b"meow", b"cat2": b"purr"}
+	a.setBatch(kv)
+	a.scan(b"cat")
+
+def test_history():
+	apikey="justatest"
+	host="127.0.0.1"
+	port=3324
+	a=mock_lc.MockClient(apikey,host,port)
+	a.set(b"gorilla",b"banana")
+	a.history(key=b"gorilla")

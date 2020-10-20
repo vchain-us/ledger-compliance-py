@@ -16,6 +16,7 @@ class LCItem:
 	key: bytes
 	value: bytes
 	index: int
+	timestamp: int
 
 @dataclass
 class Proof:

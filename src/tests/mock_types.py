@@ -39,3 +39,7 @@ class MockSafeGetResponse:
 class MockHealthInfo:
 	status: bool
 	version: str
+
+@dataclass
+class MockList:
+	items: list # list of simpleresponsse
