@@ -38,18 +38,35 @@ A simple example is provided in the "examples" subdirectory.
 ## Step by step guide
 
 ### Creating the client
+
 The first step is to instantiate a LC client. You only need one ''API Key'', and the IP address (and the port) of the Ledger Compliance Server.
 
 ```python
 import LedgerCompliance.client
 
 apikey="fgyozystagmmfalppyttvlqxyuwawgdwmmsd"
-host="192.168.199.199"
-port=3324
+host="cnlcserver.address.com"
+port=443
 
 client=LedgerCompliance.client.Client(apikey,host,port)
 client.connect()
 ```
+
+You must have a valid certificate in order to use the recommended HTTPS protocol.
+You can also use insecure (HTTP) protocol: don't do that in production, but avoid having to setup a valid certificate.
+
+```python
+import LedgerCompliance.client
+
+apikey="fgyozystagmmfalppyttvlqxyuwawgdwmmsd"
+host="cnlcserver.address.com"
+port=80
+
+client=LedgerCompliance.client.Client(apikey,host,port, secure=False)
+client.connect()
+```
+
+If you have your own CA, or self-signed certificate, you can use ''set_credentials'' method to set the CA root certificate.
 
 ### Using get/set to store/retrieve data
 
@@ -120,4 +137,4 @@ print(client.History(b"key1"))
 ```
 
 ### Multithreading / multiprocessing
-The library is not reentrant. If used in a multiprocess application, each running process  must have its own instance.
+The library is not reentrant. If used in a multiprocess application, each running process must have its own instance.

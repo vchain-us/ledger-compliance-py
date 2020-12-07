@@ -10,11 +10,25 @@ from . import types, proofs
 import time
 
 class Client:
-	def __init__(self, apikey: str, host: str, port: int):
+	def __init__(self, apikey: str, host: str, port: int, secure:bool=False):
 		self.apikey=apikey
 		self.host=host
 		self.port=port
-		self.channel = grpc.insecure_channel("{}:{}".format(self.host,self.port))
+		if secure:
+			self.credentials=grpc.ssl_channel_credentials()
+			self.channel = grpc.secure_channel(
+				"{}:{}".format(self.host,self.port),self.credentials)
+		else:
+			self.channel = grpc.insecure_channel(
+				"{}:{}".format(self.host,self.port))
+		self.__stub = lc.LcServiceStub(self.channel)
+		self.__rs = None
+		
+	def set_credentials(self, root_certificates=None, private_key=None, certificate_chain=None):
+		self.credentials=grpc.ssl_channel_credentials(
+			root_certificates, private_key, certificate_chain)
+		self.channel = grpc.secure_channel(
+			"{}:{}".format(self.host,self.port),self.credentials)
 		self.__stub = lc.LcServiceStub(self.channel)
 		self.__rs = None
 
