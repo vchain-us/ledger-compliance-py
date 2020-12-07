@@ -4,7 +4,7 @@ _SetSeparator=b"_~|IMMU|~_"
 
 def wrap_zindex_ref(key: bytes, index) -> bytes:
 	fmt=">{}sQB".format(len(key))
-	if index.index!=None:
+	if index!=None and index.index!=None:
 		ret=struct.pack(fmt,key,index.index,1)
 	else:
 		ret=struct.pack(fmt,key,0,0)

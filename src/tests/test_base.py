@@ -106,5 +106,7 @@ def test_z():
 	a.LoadFakeRoot('safezadd')
 	ret=a.safeZAdd(b"zoo",0.6,b"cobra",22)
 	assert ret.verified==True
+	ret=a.safeZAdd(b"zoo",0.6,b"cobra",None)
+	assert ret.verified==False
 	
 	

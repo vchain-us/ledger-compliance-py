@@ -197,8 +197,11 @@ class Client:
 		ret= self.__stub.ZAdd(request)
 		return types.LCIndex(index=ret.index)
 	
-	def safeZAdd(self, zset:bytes, score:float, key:bytes, index: int):
-		idx=schema_pb2.Index(index=index)
+	def safeZAdd(self, zset:bytes, score:float, key:bytes, index:int=None):
+		if index!=None:
+			idx=schema_pb2.Index(index=index)
+		else:
+			idx=None
 		scor=schema_pb2.Score(score=score)
 		opt = schema_pb2.ZAddOptions(set=zset, score=scor, key=key, index=idx)
 		rootindex=schema_pb2.Index(index=self.__rs.index)
