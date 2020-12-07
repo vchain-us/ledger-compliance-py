@@ -66,7 +66,11 @@ client=LedgerCompliance.client.Client(apikey,host,port, secure=False)
 client.connect()
 ```
 
+### Using self-signed certificates
+
 If you have your own CA, or self-signed certificate, you can use ''set_credentials'' method to set the CA root certificate.
+Keep in mind that python grpc ssl library always checks if hostname is matching the certificates, so if you are using an ip address as hostname, that IP must be in the certificate's SAN names. In alternative, you can define add an entry in the /etc/hosts file and use that name as hostname.
+
 
 ### Using get/set to store/retrieve data
 
