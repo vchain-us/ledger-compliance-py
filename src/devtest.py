@@ -2,12 +2,13 @@
 
 import LedgerCompliance.client
 
-apikey="hpkqcnqdtcmgudfuuyfshnvsmfnwiyleajcq"
+apikey="eblkgcmmowliwbvojouqiligydgqdqspatyh"
 host="ppp.immudb.io"
-port=33443
+port=443
 
 a=LedgerCompliance.client.Client(apikey,host,port,True)
-a.set_credentials()
+with open("/home/simone/dl/lc-vchain-us.pem","rb") as f:
+	a.set_credentials(root_certificates=f.read())
 a.connect()
 #print(a.set(b"gorilla",b"banana"))
 #print(a.get(b"gorilla"))

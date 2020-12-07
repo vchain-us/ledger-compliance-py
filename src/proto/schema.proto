@@ -16,7 +16,7 @@ limitations under the License.
 
 syntax = "proto3";
 
-import "google/api/annotations.proto";
+// import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 package immudb.schema;
@@ -99,10 +99,23 @@ message KeyValue {
 	bytes value = 2;
 }
 
+message Op{
+	oneof operation {
+		KeyValue KVs = 1;
+		ZAddOptions ZOpts = 2;
+		ReferenceOptions ROpts = 3;
+	}
+}
+
+message Ops{
+	repeated Op Operations = 1;
+}
+
 message StructuredKeyValue {
 	bytes key = 1;
 	Content value = 2;
 }
+
 message Content {
 	uint64 timestamp = 1;
 	bytes payload = 2;
@@ -140,9 +153,32 @@ message ItemList {
 	repeated Item items = 1;
 }
 
+message ZItem {
+	Item item = 1;
+	double score = 2;
+	bytes currentOffset = 3;
+	uint64 index = 4;
+}
+
+message ZItemList {
+	repeated ZItem items = 1;
+}
+
 message StructuredItemList {
 	repeated StructuredItem items = 1;
 }
+
+message ZStructuredItemList {
+	repeated ZStructuredItem items = 1;
+}
+
+message ZStructuredItem {
+	StructuredItem item = 1;
+	double score = 2;
+	bytes currentOffset = 3;
+	uint64 index = 4;
+}
+
 
 message Root {
 	RootIndex payload = 1;
@@ -238,6 +274,7 @@ message HealthResponse {
 message ReferenceOptions {
 	bytes reference = 1;
 	bytes key = 2;
+	Index index = 3;
 }
 
 /*
@@ -247,8 +284,9 @@ Because it is not purely about the storage size, but also use cases.
 */
 message ZAddOptions {
 	bytes set = 1;
-	double score = 2;
+	Score score = 2;
 	bytes key = 3;
+	Index index = 4;
 }
 
 message ZScanOptions {
@@ -256,6 +294,12 @@ message ZScanOptions {
 	bytes offset = 2;
 	uint64 limit = 3;
 	bool reverse = 4;
+	Score min = 5;
+	Score max = 6;
+}
+
+message Score {
+	double score = 1;
 }
 
 message IScanOptions {
@@ -272,6 +316,13 @@ message SPage {
 	repeated StructuredItem items = 1;
 	uint64 pageNum  = 2;
 	bool more = 3;
+}
+
+message HistoryOptions {
+	bytes key = 1;
+	uint64 offset = 2;
+	uint64 limit = 3;
+	bool reverse = 4;
 }
 
 message SafeZAddOptions {
@@ -332,33 +383,23 @@ service ImmuService {
 
 	rpc Set (KeyValue) returns (Index){}
 
-	rpc SetSV (StructuredKeyValue) returns (Index){}
-
 	rpc SafeSet(SafeSetOptions) returns (Proof){}
-
-	rpc SafeSetSV(SafeSetSVOptions) returns (Proof){}
 
 	rpc Get (Key) returns (Item){}
 
-	rpc GetSV (Key) returns (StructuredItem){}
-
 	rpc SafeGet(SafeGetOptions) returns (SafeItem){}
-
-	rpc SafeGetSV(SafeGetOptions) returns (SafeStructuredItem){}
 
 	rpc SetBatch (KVList) returns (Index){}
 
-	rpc SetBatchSV (SKVList) returns (Index){}
-
 	rpc GetBatch (KeyList) returns (ItemList){}
 
-	rpc GetBatchSV (KeyList) returns (StructuredItemList){}
+	rpc ExecAllOps (Ops) returns (Index){}
 
 	rpc Scan(ScanOptions) returns (ItemList){}
 
-	rpc ScanSV(ScanOptions) returns (StructuredItemList){}
-
 	rpc Count(KeyPrefix) returns (ItemsCount){}
+
+	rpc CountAll(google.protobuf.Empty) returns (ItemsCount){}
 
 	rpc CurrentRoot(google.protobuf.Empty) returns (Root) {}
 
@@ -370,43 +411,32 @@ service ImmuService {
 
 	rpc BySafeIndex(SafeIndexOptions) returns (SafeItem){}
 
-	rpc ByIndexSV(Index) returns (StructuredItem){}
-
-	rpc History(Key) returns (ItemList){}
-
-	rpc HistorySV(Key) returns (StructuredItemList){}
+	rpc History(HistoryOptions) returns (ItemList){}
 
 	rpc Health (google.protobuf.Empty) returns (HealthResponse){}
 
 	rpc Reference (ReferenceOptions) returns (Index){}
 
+	rpc GetReference (Key) returns (Item){}
+
 	rpc SafeReference (SafeReferenceOptions) returns (Proof){}
 
 	rpc ZAdd (ZAddOptions) returns (Index){}
 
-	rpc ZScan (ZScanOptions) returns (ItemList){}
-
-	rpc ZScanSV (ZScanOptions) returns (StructuredItemList){}
+	rpc ZScan (ZScanOptions) returns (ZItemList){}
 
 	rpc SafeZAdd (SafeZAddOptions) returns (Proof){}
 
 	rpc IScan (IScanOptions) returns (Page){}
 
-	rpc IScanSV (IScanOptions) returns (SPage){}
-
-	rpc Dump(google.protobuf.Empty) returns (stream KVList) {}
+// 	rpc Dump(google.protobuf.Empty) returns (stream pb.KVList) {}
 
 	// todo(joe-dz): Enable restore when the feature is required again
-	//	rpc Restore(stream KVList) returns (ItemsCount) {}
+	//	rpc Restore(stream pb.KVList) returns (ItemsCount) {}
 
 	rpc CreateDatabase(Database) returns (google.protobuf.Empty) {}
 
 	rpc UseDatabase(Database) returns (UseDatabaseReply) {}
 
-	rpc ChangePermission(ChangePermissionRequest) returns (google.protobuf.Empty) {}
-
-	rpc SetActiveUser (SetActiveUserRequest) returns (google.protobuf.Empty){}
-
 	rpc DatabaseList (google.protobuf.Empty) returns (DatabaseListResponse){}
-
 }

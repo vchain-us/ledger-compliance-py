@@ -190,20 +190,24 @@ class Client:
 		ret=self.__stub.History(request)
 		return self._parseItemList(ret.items)
 	
-	def zAdd(self, zset:bytes, score:float, key:bytes):
-		request = schema_pb2.ZAddOptions(set=zset, score=score, key=key)
+	def zAdd(self, zset:bytes, score:float, key:bytes, index:int):
+		scor=schema_pb2.Score(score=score)
+		idx=schema_pb2.Index(index=index)
+		request = schema_pb2.ZAddOptions(set=zset, score=scor, key=key, index=idx)
 		ret= self.__stub.ZAdd(request)
 		return types.LCIndex(index=ret.index)
 	
-	def safeZAdd(self, zset:bytes, score:float, key:bytes):
-		opt = schema_pb2.ZAddOptions(set=zset, score=score, key=key)
-		index=schema_pb2.Index(index=self.__rs.index)
-		request = schema_pb2.SafeZAddOptions(zopts=opt, rootIndex=index)
+	def safeZAdd(self, zset:bytes, score:float, key:bytes, index: int):
+		idx=schema_pb2.Index(index=index)
+		scor=schema_pb2.Score(score=score)
+		opt = schema_pb2.ZAddOptions(set=zset, score=scor, key=key, index=idx)
+		rootindex=schema_pb2.Index(index=self.__rs.index)
+		request = schema_pb2.SafeZAddOptions(zopts=opt, rootIndex=rootindex)
 		msg= self.__stub.SafeZAdd(request) # msg type is "Proof"
-		
+		print("MSG:",msg,"/MSG")
 		# message verification
-		key2=utils.build_set_key(key, zset, score, index)
-		value=utils.wrap_zindex_ref(key, index)
+		key2=utils.build_set_key(key, zset, score, idx)
+		value=utils.wrap_zindex_ref(key, idx)
 		digest = proofs.digest(msg.index, key2, value)
 		verified = proofs.verify(msg, digest, self.__rs)
 		

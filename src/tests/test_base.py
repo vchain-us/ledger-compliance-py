@@ -101,7 +101,10 @@ def test_z():
 	port=3324
 	a=mock_lc.MockClient(apikey,host,port)
 	a.LoadFakeRoot('set')
-	a.zAdd(b"vanilla",10.0, b"gorilla")
-	a.safeZAdd(b"tortilla",11.0, b"gorilla")
+	a.zAdd(b"vanilla",10.0, b"gorilla",1)
 	a.zScan(b"vanilla",None, 1, False)
+	a.LoadFakeRoot('safezadd')
+	ret=a.safeZAdd(b"zoo",0.6,b"cobra",22)
+	assert ret.verified==True
+	
 	

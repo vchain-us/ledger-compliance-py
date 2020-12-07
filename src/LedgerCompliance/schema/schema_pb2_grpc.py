@@ -62,19 +62,9 @@ class ImmuServiceStub(object):
                 request_serializer=schema__pb2.KeyValue.SerializeToString,
                 response_deserializer=schema__pb2.Index.FromString,
                 )
-        self.SetSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/SetSV',
-                request_serializer=schema__pb2.StructuredKeyValue.SerializeToString,
-                response_deserializer=schema__pb2.Index.FromString,
-                )
         self.SafeSet = channel.unary_unary(
                 '/immudb.schema.ImmuService/SafeSet',
                 request_serializer=schema__pb2.SafeSetOptions.SerializeToString,
-                response_deserializer=schema__pb2.Proof.FromString,
-                )
-        self.SafeSetSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/SafeSetSV',
-                request_serializer=schema__pb2.SafeSetSVOptions.SerializeToString,
                 response_deserializer=schema__pb2.Proof.FromString,
                 )
         self.Get = channel.unary_unary(
@@ -82,29 +72,14 @@ class ImmuServiceStub(object):
                 request_serializer=schema__pb2.Key.SerializeToString,
                 response_deserializer=schema__pb2.Item.FromString,
                 )
-        self.GetSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/GetSV',
-                request_serializer=schema__pb2.Key.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItem.FromString,
-                )
         self.SafeGet = channel.unary_unary(
                 '/immudb.schema.ImmuService/SafeGet',
                 request_serializer=schema__pb2.SafeGetOptions.SerializeToString,
                 response_deserializer=schema__pb2.SafeItem.FromString,
                 )
-        self.SafeGetSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/SafeGetSV',
-                request_serializer=schema__pb2.SafeGetOptions.SerializeToString,
-                response_deserializer=schema__pb2.SafeStructuredItem.FromString,
-                )
         self.SetBatch = channel.unary_unary(
                 '/immudb.schema.ImmuService/SetBatch',
                 request_serializer=schema__pb2.KVList.SerializeToString,
-                response_deserializer=schema__pb2.Index.FromString,
-                )
-        self.SetBatchSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/SetBatchSV',
-                request_serializer=schema__pb2.SKVList.SerializeToString,
                 response_deserializer=schema__pb2.Index.FromString,
                 )
         self.GetBatch = channel.unary_unary(
@@ -112,24 +87,24 @@ class ImmuServiceStub(object):
                 request_serializer=schema__pb2.KeyList.SerializeToString,
                 response_deserializer=schema__pb2.ItemList.FromString,
                 )
-        self.GetBatchSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/GetBatchSV',
-                request_serializer=schema__pb2.KeyList.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItemList.FromString,
+        self.ExecAllOps = channel.unary_unary(
+                '/immudb.schema.ImmuService/ExecAllOps',
+                request_serializer=schema__pb2.Ops.SerializeToString,
+                response_deserializer=schema__pb2.Index.FromString,
                 )
         self.Scan = channel.unary_unary(
                 '/immudb.schema.ImmuService/Scan',
                 request_serializer=schema__pb2.ScanOptions.SerializeToString,
                 response_deserializer=schema__pb2.ItemList.FromString,
                 )
-        self.ScanSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/ScanSV',
-                request_serializer=schema__pb2.ScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItemList.FromString,
-                )
         self.Count = channel.unary_unary(
                 '/immudb.schema.ImmuService/Count',
                 request_serializer=schema__pb2.KeyPrefix.SerializeToString,
+                response_deserializer=schema__pb2.ItemsCount.FromString,
+                )
+        self.CountAll = channel.unary_unary(
+                '/immudb.schema.ImmuService/CountAll',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=schema__pb2.ItemsCount.FromString,
                 )
         self.CurrentRoot = channel.unary_unary(
@@ -157,20 +132,10 @@ class ImmuServiceStub(object):
                 request_serializer=schema__pb2.SafeIndexOptions.SerializeToString,
                 response_deserializer=schema__pb2.SafeItem.FromString,
                 )
-        self.ByIndexSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/ByIndexSV',
-                request_serializer=schema__pb2.Index.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItem.FromString,
-                )
         self.History = channel.unary_unary(
                 '/immudb.schema.ImmuService/History',
-                request_serializer=schema__pb2.Key.SerializeToString,
+                request_serializer=schema__pb2.HistoryOptions.SerializeToString,
                 response_deserializer=schema__pb2.ItemList.FromString,
-                )
-        self.HistorySV = channel.unary_unary(
-                '/immudb.schema.ImmuService/HistorySV',
-                request_serializer=schema__pb2.Key.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItemList.FromString,
                 )
         self.Health = channel.unary_unary(
                 '/immudb.schema.ImmuService/Health',
@@ -181,6 +146,11 @@ class ImmuServiceStub(object):
                 '/immudb.schema.ImmuService/Reference',
                 request_serializer=schema__pb2.ReferenceOptions.SerializeToString,
                 response_deserializer=schema__pb2.Index.FromString,
+                )
+        self.GetReference = channel.unary_unary(
+                '/immudb.schema.ImmuService/GetReference',
+                request_serializer=schema__pb2.Key.SerializeToString,
+                response_deserializer=schema__pb2.Item.FromString,
                 )
         self.SafeReference = channel.unary_unary(
                 '/immudb.schema.ImmuService/SafeReference',
@@ -195,12 +165,7 @@ class ImmuServiceStub(object):
         self.ZScan = channel.unary_unary(
                 '/immudb.schema.ImmuService/ZScan',
                 request_serializer=schema__pb2.ZScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.ItemList.FromString,
-                )
-        self.ZScanSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/ZScanSV',
-                request_serializer=schema__pb2.ZScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.StructuredItemList.FromString,
+                response_deserializer=schema__pb2.ZItemList.FromString,
                 )
         self.SafeZAdd = channel.unary_unary(
                 '/immudb.schema.ImmuService/SafeZAdd',
@@ -212,16 +177,6 @@ class ImmuServiceStub(object):
                 request_serializer=schema__pb2.IScanOptions.SerializeToString,
                 response_deserializer=schema__pb2.Page.FromString,
                 )
-        self.IScanSV = channel.unary_unary(
-                '/immudb.schema.ImmuService/IScanSV',
-                request_serializer=schema__pb2.IScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.SPage.FromString,
-                )
-        self.Dump = channel.unary_stream(
-                '/immudb.schema.ImmuService/Dump',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=schema__pb2.KVList.FromString,
-                )
         self.CreateDatabase = channel.unary_unary(
                 '/immudb.schema.ImmuService/CreateDatabase',
                 request_serializer=schema__pb2.Database.SerializeToString,
@@ -231,16 +186,6 @@ class ImmuServiceStub(object):
                 '/immudb.schema.ImmuService/UseDatabase',
                 request_serializer=schema__pb2.Database.SerializeToString,
                 response_deserializer=schema__pb2.UseDatabaseReply.FromString,
-                )
-        self.ChangePermission = channel.unary_unary(
-                '/immudb.schema.ImmuService/ChangePermission',
-                request_serializer=schema__pb2.ChangePermissionRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                )
-        self.SetActiveUser = channel.unary_unary(
-                '/immudb.schema.ImmuService/SetActiveUser',
-                request_serializer=schema__pb2.SetActiveUserRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 )
         self.DatabaseList = channel.unary_unary(
                 '/immudb.schema.ImmuService/DatabaseList',
@@ -308,19 +253,7 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SetSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def SafeSet(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def SafeSetSV(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -332,19 +265,7 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def SafeGet(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def SafeGetSV(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -356,19 +277,13 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SetBatchSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def GetBatch(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetBatchSV(self, request, context):
+    def ExecAllOps(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -380,13 +295,13 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ScanSV(self, request, context):
+    def Count(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Count(self, request, context):
+    def CountAll(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -422,19 +337,7 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ByIndexSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def History(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def HistorySV(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -447,6 +350,12 @@ class ImmuServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def Reference(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetReference(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -470,12 +379,6 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ZScanSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def SafeZAdd(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -488,21 +391,11 @@ class ImmuServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def IScanSV(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Dump(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def CreateDatabase(self, request, context):
-        """todo(joe-dz): Enable restore when the feature is required again
-        	rpc Restore(stream KVList) returns (ItemsCount) {}
+        """	rpc Dump(google.protobuf.Empty) returns (stream pb.KVList) {}
+
+        todo(joe-dz): Enable restore when the feature is required again
+        	rpc Restore(stream pb.KVList) returns (ItemsCount) {}
 
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -510,18 +403,6 @@ class ImmuServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def UseDatabase(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ChangePermission(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def SetActiveUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -581,19 +462,9 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.KeyValue.FromString,
                     response_serializer=schema__pb2.Index.SerializeToString,
             ),
-            'SetSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetSV,
-                    request_deserializer=schema__pb2.StructuredKeyValue.FromString,
-                    response_serializer=schema__pb2.Index.SerializeToString,
-            ),
             'SafeSet': grpc.unary_unary_rpc_method_handler(
                     servicer.SafeSet,
                     request_deserializer=schema__pb2.SafeSetOptions.FromString,
-                    response_serializer=schema__pb2.Proof.SerializeToString,
-            ),
-            'SafeSetSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.SafeSetSV,
-                    request_deserializer=schema__pb2.SafeSetSVOptions.FromString,
                     response_serializer=schema__pb2.Proof.SerializeToString,
             ),
             'Get': grpc.unary_unary_rpc_method_handler(
@@ -601,29 +472,14 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.Key.FromString,
                     response_serializer=schema__pb2.Item.SerializeToString,
             ),
-            'GetSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetSV,
-                    request_deserializer=schema__pb2.Key.FromString,
-                    response_serializer=schema__pb2.StructuredItem.SerializeToString,
-            ),
             'SafeGet': grpc.unary_unary_rpc_method_handler(
                     servicer.SafeGet,
                     request_deserializer=schema__pb2.SafeGetOptions.FromString,
                     response_serializer=schema__pb2.SafeItem.SerializeToString,
             ),
-            'SafeGetSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.SafeGetSV,
-                    request_deserializer=schema__pb2.SafeGetOptions.FromString,
-                    response_serializer=schema__pb2.SafeStructuredItem.SerializeToString,
-            ),
             'SetBatch': grpc.unary_unary_rpc_method_handler(
                     servicer.SetBatch,
                     request_deserializer=schema__pb2.KVList.FromString,
-                    response_serializer=schema__pb2.Index.SerializeToString,
-            ),
-            'SetBatchSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetBatchSV,
-                    request_deserializer=schema__pb2.SKVList.FromString,
                     response_serializer=schema__pb2.Index.SerializeToString,
             ),
             'GetBatch': grpc.unary_unary_rpc_method_handler(
@@ -631,24 +487,24 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.KeyList.FromString,
                     response_serializer=schema__pb2.ItemList.SerializeToString,
             ),
-            'GetBatchSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetBatchSV,
-                    request_deserializer=schema__pb2.KeyList.FromString,
-                    response_serializer=schema__pb2.StructuredItemList.SerializeToString,
+            'ExecAllOps': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecAllOps,
+                    request_deserializer=schema__pb2.Ops.FromString,
+                    response_serializer=schema__pb2.Index.SerializeToString,
             ),
             'Scan': grpc.unary_unary_rpc_method_handler(
                     servicer.Scan,
                     request_deserializer=schema__pb2.ScanOptions.FromString,
                     response_serializer=schema__pb2.ItemList.SerializeToString,
             ),
-            'ScanSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.ScanSV,
-                    request_deserializer=schema__pb2.ScanOptions.FromString,
-                    response_serializer=schema__pb2.StructuredItemList.SerializeToString,
-            ),
             'Count': grpc.unary_unary_rpc_method_handler(
                     servicer.Count,
                     request_deserializer=schema__pb2.KeyPrefix.FromString,
+                    response_serializer=schema__pb2.ItemsCount.SerializeToString,
+            ),
+            'CountAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.CountAll,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=schema__pb2.ItemsCount.SerializeToString,
             ),
             'CurrentRoot': grpc.unary_unary_rpc_method_handler(
@@ -676,20 +532,10 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.SafeIndexOptions.FromString,
                     response_serializer=schema__pb2.SafeItem.SerializeToString,
             ),
-            'ByIndexSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.ByIndexSV,
-                    request_deserializer=schema__pb2.Index.FromString,
-                    response_serializer=schema__pb2.StructuredItem.SerializeToString,
-            ),
             'History': grpc.unary_unary_rpc_method_handler(
                     servicer.History,
-                    request_deserializer=schema__pb2.Key.FromString,
+                    request_deserializer=schema__pb2.HistoryOptions.FromString,
                     response_serializer=schema__pb2.ItemList.SerializeToString,
-            ),
-            'HistorySV': grpc.unary_unary_rpc_method_handler(
-                    servicer.HistorySV,
-                    request_deserializer=schema__pb2.Key.FromString,
-                    response_serializer=schema__pb2.StructuredItemList.SerializeToString,
             ),
             'Health': grpc.unary_unary_rpc_method_handler(
                     servicer.Health,
@@ -700,6 +546,11 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     servicer.Reference,
                     request_deserializer=schema__pb2.ReferenceOptions.FromString,
                     response_serializer=schema__pb2.Index.SerializeToString,
+            ),
+            'GetReference': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetReference,
+                    request_deserializer=schema__pb2.Key.FromString,
+                    response_serializer=schema__pb2.Item.SerializeToString,
             ),
             'SafeReference': grpc.unary_unary_rpc_method_handler(
                     servicer.SafeReference,
@@ -714,12 +565,7 @@ def add_ImmuServiceServicer_to_server(servicer, server):
             'ZScan': grpc.unary_unary_rpc_method_handler(
                     servicer.ZScan,
                     request_deserializer=schema__pb2.ZScanOptions.FromString,
-                    response_serializer=schema__pb2.ItemList.SerializeToString,
-            ),
-            'ZScanSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.ZScanSV,
-                    request_deserializer=schema__pb2.ZScanOptions.FromString,
-                    response_serializer=schema__pb2.StructuredItemList.SerializeToString,
+                    response_serializer=schema__pb2.ZItemList.SerializeToString,
             ),
             'SafeZAdd': grpc.unary_unary_rpc_method_handler(
                     servicer.SafeZAdd,
@@ -731,16 +577,6 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     request_deserializer=schema__pb2.IScanOptions.FromString,
                     response_serializer=schema__pb2.Page.SerializeToString,
             ),
-            'IScanSV': grpc.unary_unary_rpc_method_handler(
-                    servicer.IScanSV,
-                    request_deserializer=schema__pb2.IScanOptions.FromString,
-                    response_serializer=schema__pb2.SPage.SerializeToString,
-            ),
-            'Dump': grpc.unary_stream_rpc_method_handler(
-                    servicer.Dump,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=schema__pb2.KVList.SerializeToString,
-            ),
             'CreateDatabase': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateDatabase,
                     request_deserializer=schema__pb2.Database.FromString,
@@ -750,16 +586,6 @@ def add_ImmuServiceServicer_to_server(servicer, server):
                     servicer.UseDatabase,
                     request_deserializer=schema__pb2.Database.FromString,
                     response_serializer=schema__pb2.UseDatabaseReply.SerializeToString,
-            ),
-            'ChangePermission': grpc.unary_unary_rpc_method_handler(
-                    servicer.ChangePermission,
-                    request_deserializer=schema__pb2.ChangePermissionRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            ),
-            'SetActiveUser': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetActiveUser,
-                    request_deserializer=schema__pb2.SetActiveUserRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'DatabaseList': grpc.unary_unary_rpc_method_handler(
                     servicer.DatabaseList,
@@ -932,23 +758,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SetSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SetSV',
-            schema__pb2.StructuredKeyValue.SerializeToString,
-            schema__pb2.Index.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def SafeSet(request,
             target,
             options=(),
@@ -961,23 +770,6 @@ class ImmuService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SafeSet',
             schema__pb2.SafeSetOptions.SerializeToString,
-            schema__pb2.Proof.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def SafeSetSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SafeSetSV',
-            schema__pb2.SafeSetSVOptions.SerializeToString,
             schema__pb2.Proof.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -1000,23 +792,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/GetSV',
-            schema__pb2.Key.SerializeToString,
-            schema__pb2.StructuredItem.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def SafeGet(request,
             target,
             options=(),
@@ -1034,23 +809,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SafeGetSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SafeGetSV',
-            schema__pb2.SafeGetOptions.SerializeToString,
-            schema__pb2.SafeStructuredItem.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def SetBatch(request,
             target,
             options=(),
@@ -1063,23 +821,6 @@ class ImmuService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SetBatch',
             schema__pb2.KVList.SerializeToString,
-            schema__pb2.Index.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def SetBatchSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SetBatchSV',
-            schema__pb2.SKVList.SerializeToString,
             schema__pb2.Index.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -1102,7 +843,7 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetBatchSV(request,
+    def ExecAllOps(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1112,9 +853,9 @@ class ImmuService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/GetBatchSV',
-            schema__pb2.KeyList.SerializeToString,
-            schema__pb2.StructuredItemList.FromString,
+        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ExecAllOps',
+            schema__pb2.Ops.SerializeToString,
+            schema__pb2.Index.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1136,23 +877,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def ScanSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ScanSV',
-            schema__pb2.ScanOptions.SerializeToString,
-            schema__pb2.StructuredItemList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def Count(request,
             target,
             options=(),
@@ -1165,6 +889,23 @@ class ImmuService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/Count',
             schema__pb2.KeyPrefix.SerializeToString,
+            schema__pb2.ItemsCount.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CountAll(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/CountAll',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             schema__pb2.ItemsCount.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -1255,23 +996,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def ByIndexSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ByIndexSV',
-            schema__pb2.Index.SerializeToString,
-            schema__pb2.StructuredItem.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def History(request,
             target,
             options=(),
@@ -1283,25 +1007,8 @@ class ImmuService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/History',
-            schema__pb2.Key.SerializeToString,
+            schema__pb2.HistoryOptions.SerializeToString,
             schema__pb2.ItemList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def HistorySV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/HistorySV',
-            schema__pb2.Key.SerializeToString,
-            schema__pb2.StructuredItemList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1336,6 +1043,23 @@ class ImmuService(object):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/Reference',
             schema__pb2.ReferenceOptions.SerializeToString,
             schema__pb2.Index.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetReference(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/GetReference',
+            schema__pb2.Key.SerializeToString,
+            schema__pb2.Item.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1386,24 +1110,7 @@ class ImmuService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ZScan',
             schema__pb2.ZScanOptions.SerializeToString,
-            schema__pb2.ItemList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def ZScanSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ZScanSV',
-            schema__pb2.ZScanOptions.SerializeToString,
-            schema__pb2.StructuredItemList.FromString,
+            schema__pb2.ZItemList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1442,40 +1149,6 @@ class ImmuService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def IScanSV(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/IScanSV',
-            schema__pb2.IScanOptions.SerializeToString,
-            schema__pb2.SPage.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Dump(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/immudb.schema.ImmuService/Dump',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            schema__pb2.KVList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def CreateDatabase(request,
             target,
             options=(),
@@ -1506,40 +1179,6 @@ class ImmuService(object):
         return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/UseDatabase',
             schema__pb2.Database.SerializeToString,
             schema__pb2.UseDatabaseReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def ChangePermission(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/ChangePermission',
-            schema__pb2.ChangePermissionRequest.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def SetActiveUser(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/immudb.schema.ImmuService/SetActiveUser',
-            schema__pb2.SetActiveUserRequest.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

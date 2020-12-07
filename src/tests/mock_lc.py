@@ -51,12 +51,12 @@ class MockServer:
 		return MockList(items=ret)
 		
 	def ZAdd(self, request):
-		self.mem[request.set]=b"%f"%request.score
+		self.mem[request.set]=b"%f"%request.score.score
 		return SimpleResponse(request.key, 0, len(self.mem))
 	
 	def SafeZAdd(self, request):
-		self.mem[request.zopts.set]=b"%f"%request.zopts.score
-		return fakeSetResponse
+		self.mem[request.zopts.set]=b"%f"%request.zopts.score.score
+		return fakeSafeZSetResponse
 
 	def ZScan(self, request):
 		sr=SimpleResponse(key=request.set, value=self.mem[request.set], index=len(self.mem))
