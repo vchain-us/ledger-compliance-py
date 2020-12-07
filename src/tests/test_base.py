@@ -12,7 +12,9 @@ def test_connect():
 	apikey="justatest"
 	host="127.0.0.1"
 	port=3324
-	a=mock_lc.MockClient(apikey,host,port)
+	a=mock_lc.MockClient(apikey,host,port,secure=False)
+	a=mock_lc.MockClient(apikey,host,port,secure=True)
+	a.set_credentials()
 	try:
 		a.connect()
 	except grpc._channel._InactiveRpcError as e:
@@ -92,3 +94,14 @@ def test_history():
 	a=mock_lc.MockClient(apikey,host,port)
 	a.set(b"gorilla",b"banana")
 	a.history(key=b"gorilla")
+
+def test_z():
+	apikey="justatest"
+	host="127.0.0.1"
+	port=3324
+	a=mock_lc.MockClient(apikey,host,port)
+	a.LoadFakeRoot('set')
+	a.zAdd(b"vanilla",10.0, b"gorilla")
+	a.safeZAdd(b"tortilla",11.0, b"gorilla")
+	a.zScan(b"vanilla",None, 1, False)
+	

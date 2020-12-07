@@ -6,11 +6,11 @@ from LedgerCompliance.schema import schema_pb2_grpc as immudb
 from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
 
 from LedgerCompliance import header_manipulator_client_interceptor as interceptor
-from . import types, proofs
+from . import types, proofs, utils
 import time
 
 class Client:
-	def __init__(self, apikey: str, host: str, port: int, secure:bool=False):
+	def __init__(self, apikey: str, host: str, port: int, secure:bool=True):
 		self.apikey=apikey
 		self.host=host
 		self.port=port
@@ -188,5 +188,37 @@ class Client:
 	def history(self, key: bytes):
 		request = schema_pb2.Key(key=key)
 		ret=self.__stub.History(request)
+		return self._parseItemList(ret.items)
+	
+	def zAdd(self, zset:bytes, score:float, key:bytes):
+		request = schema_pb2.ZAddOptions(set=zset, score=score, key=key)
+		ret= self.__stub.ZAdd(request)
+		return types.LCIndex(index=ret.index)
+	
+	def safeZAdd(self, zset:bytes, score:float, key:bytes):
+		opt = schema_pb2.ZAddOptions(set=zset, score=score, key=key)
+		index=schema_pb2.Index(index=self.__rs.index)
+		request = schema_pb2.SafeZAddOptions(zopts=opt, rootIndex=index)
+		msg= self.__stub.SafeZAdd(request) # msg type is "Proof"
+		
+		# message verification
+		key2=utils.build_set_key(key, zset, score, index)
+		value=utils.wrap_zindex_ref(key, index)
+		digest = proofs.digest(msg.index, key2, value)
+		verified = proofs.verify(msg, digest, self.__rs)
+		
+		if verified:
+			# Update root
+			self.__rs=schema_pb2.RootIndex(index=msg.at, root=msg.root)
+		proof=self._mkProof(msg)
+		return types.SafeSetResponse(
+			index=msg.index,
+			proof=proof,
+			verified=verified
+		)
+	
+	def zScan(self, zset: bytes, offset: bytes, limit: int, reverse:bool):
+		request=schema_pb2.ZScanOptions(set=zset, offset=offset, limit=limit, reverse=reverse)
+		ret=self.__stub.ZScan(request)
 		return self._parseItemList(ret.items)
 

@@ -50,12 +50,23 @@ class MockServer:
 		ret=[sr,]
 		return MockList(items=ret)
 		
+	def ZAdd(self, request):
+		self.mem[request.set]=b"%f"%request.score
+		return SimpleResponse(request.key, 0, len(self.mem))
 	
+	def SafeZAdd(self, request):
+		self.mem[request.zopts.set]=b"%f"%request.zopts.score
+		return fakeSetResponse
+
+	def ZScan(self, request):
+		sr=SimpleResponse(key=request.set, value=self.mem[request.set], index=len(self.mem))
+		ret=[sr,]
+		return MockList(items=ret)
 
 from LedgerCompliance.client import Client
 class MockClient(Client):
-	def __init__(self, apikey: str, host: str, port: int):
-		Client.__init__(self, apikey, host, port)
+	def __init__(self, apikey: str, host: str, port: int, secure:bool=True):
+		Client.__init__(self, apikey, host, port, secure)
 		self._Client__stub=MockServer()
 	def LoadFakeRoot(self, which):
 		self._Client__rs=fakeRoot[which]
