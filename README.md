@@ -53,7 +53,7 @@ client.connect()
 ```
 
 You must have a valid certificate in order to use the recommended HTTPS protocol.
-You can also use insecure (HTTP) protocol: don't do that in production, but avoid having to setup a valid certificate.
+You can also use **insecure (HTTP) protocol**: don't do that in production, but avoid having to setup a valid certificate.
 
 ```python
 import LedgerCompliance.client
