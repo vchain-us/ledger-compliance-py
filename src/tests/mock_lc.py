@@ -62,6 +62,9 @@ class MockServer:
 		sr=SimpleResponse(key=request.set, value=self.mem[request.set], index=len(self.mem))
 		ret=[sr,]
 		return MockList(items=ret)
+	
+	def ReportTamper(self, request):
+		return None
 
 from LedgerCompliance.client import Client
 class MockClient(Client):

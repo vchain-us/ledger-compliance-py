@@ -4,6 +4,7 @@ from google.protobuf import empty_pb2 as empty_request
 from LedgerCompliance.schema import lc_pb2_grpc as lc
 from LedgerCompliance.schema import schema_pb2_grpc as immudb
 from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
+from LedgerCompliance.schema.lc_pb2_grpc import lc__pb2 as lc_pb2
 
 from LedgerCompliance import header_manipulator_client_interceptor as interceptor
 from . import types, proofs, utils
@@ -228,4 +229,11 @@ class Client:
 		request=schema_pb2.ZScanOptions(set=zset, offset=offset, limit=limit, reverse=reverse)
 		ret=self.__stub.ZScan(request)
 		return self._parseItemList(ret.items)
+	
+	def reportTamper(self, index:int, key:bytes, signature:bytes=None, publickey:bytes=None):
+		report=lc_pb2.TamperReport(index=index, key=key, root=self.__rs.root)
+		signature=schema_pb2.Signature(signature=signature, publicKey=publickey)
+		request=lc_pb2.ReportOptions(payload=report, signature=signature)
+		self.__stub.ReportTamper(request)
+	
 

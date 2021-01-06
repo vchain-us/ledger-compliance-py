@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-API="qervegelclrmbvcdhpvvmebpnyxgjknysayt"
-HOST="172.31.255.30"
-PORT=3324
+API="acpkrvlnhttowqmraisvzndfiyojsoymgcdy"
+HOST="172.31.255.10"
+PORT=80
 BATCHSIZE=500
-NUM=20
+NUM=120
 
 import LedgerCompliance.client
 import string
 import random
 import time
 
-cli=LedgerCompliance.client.Client(API, HOST, PORT)
+cli=LedgerCompliance.client.Client(API, HOST, PORT,False)
 cli.connect()
 
 def get_random_string(length):

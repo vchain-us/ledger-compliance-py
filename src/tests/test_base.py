@@ -109,4 +109,11 @@ def test_z():
 	ret=a.safeZAdd(b"zoo",0.6,b"cobra",None)
 	assert ret.verified==False
 	
+def test_tamper():
+	apikey="justatest"
+	host="127.0.0.1"
+	port=3324
+	a=mock_lc.MockClient(apikey,host,port)
+	a.LoadFakeRoot('set')
+	a.reportTamper(0,b'123',b'123',b'123')
 	
