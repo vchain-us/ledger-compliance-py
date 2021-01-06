@@ -3,7 +3,7 @@
 import LedgerCompliance.client
 
 apikey="eblkgcmmowliwbvojouqiligydgqdqspatyh"
-host="ppp.immudb.io"
+host="localhost"
 port=443
 
 a=LedgerCompliance.client.Client(apikey,host,port,True)
