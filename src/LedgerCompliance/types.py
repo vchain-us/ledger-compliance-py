@@ -8,14 +8,13 @@ class LCState:
 	
 @dataclass
 class LCIndex:
-	index: int
+	id: int
 	
 @dataclass
 class LCItem:
+	tx: int
 	key: bytes
 	value: bytes
-	index: int
-	timestamp: int
 
 @dataclass
 class Proof:

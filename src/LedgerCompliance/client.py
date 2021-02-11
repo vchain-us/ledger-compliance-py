@@ -64,30 +64,22 @@ class Client:
 		
 
 	def set(self, key: bytes, value: bytes):
-		now=int(time.time())
-		content = schema_pb2.Content(timestamp=now, payload=value)
-		request = schema_pb2.KeyValue(key=key, value=content.SerializeToString())
-		ret=self.__stub.Set(request)
-		return types.LCIndex(index=ret.index)
+		request=schema_pb2.SetRequest(
+			KVs=[schema_pb2.KeyValue(key=key, value=value)]
+		)
+		ret = self.__stub.Set(request)
+		return types.LCIndex(id=ret.id)
 	
-	def get(self, key:bytes):
+	def get(self, key:bytes) -> types.LCIndex:
 		request = schema_pb2.Key(key=key)
 		ret=self.__stub.Get(request)
-		content=schema_pb2.Content()
-		content.ParseFromString(ret.value)
-		return types.LCItem(key=ret.key, value=content.payload, index=ret.index, timestamp=content.timestamp)
+		return types.LCItem(key=ret.key, value=ret.value, tx=ret.tx)
 	
-	def _mkProof(self, msg):
-		proof=types.Proof(
-			leaf=msg.leaf,
-			index=msg.index,
-			root=msg.root,
-			at=msg.at,
-			inclusionPath=msg.inclusionPath,
-			consistencyPath=msg.consistencyPath,
-			)
-		return proof
-	
+	def getValue(self, key:bytes) -> bytes:
+		request = schema_pb2.Key(key=key)
+		ret=self.__stub.Get(request)
+		return ret.value
+
 	def verifiedSet(self, key: bytes, value: bytes):
 		# print(base64.b64encode(state.SerializeToString()))
 		kv = schema_pb2.KeyValue(key=key, value=value)
@@ -117,11 +109,8 @@ class Client:
 		verifies = proofs.VerifyDualProof( proofs.DualProofFrom(verifiableTx.dualProof), sourceID, targetID, sourceAlh, targetAlh, )
 		if not verifies:
 			raise types.VerificationException
-		self.__rs=types.LCState(
-			db=self.__rs.db,
-			txid=targetID,
-			txhash=targetAlh
-		)
+		self.__rs.txid=targetID,
+		self.__rs.txhash=targetAlh
 		return types.SafeSetResponse(
 			index=targetID,
 			verified=verifies,
@@ -169,7 +158,8 @@ class Client:
 		verifies=proofs.VerifyDualProof( dualProof, sourceid, targetid, sourcealh, targetalh)
 		if not verifies:
 			raise VerificationException
-		self.__rs=types.LCState( db=self.__rs.db, txid=targetid, txhash=targetalh )
+		self.__rs.txid=targetid
+		self.__rs.txhash=targetalh
 		if ventry.entry.referencedBy!=None and ventry.entry.referencedBy.key!=b'':
 			refkey=ventry.entry.referencedBy.key
 		else:
@@ -187,14 +177,17 @@ class Client:
 		return types.HealthInfo(status=resp.status, version=resp.version)
 	
 	def setBatch(self, kv: dict):
-		_KVs = []
-		now=int(time.time())
-		for i in kv.keys():
-			content=schema_pb2.Content(timestamp=now, payload=kv[i])
-			_KVs.append(schema_pb2.KeyValue( key=i, value=content.SerializeToString()) )
-		request = schema_pb2.KVList(KVs=_KVs)
-		ret=self.__stub.SetBatch(request)
-		return types.LCIndex(index=ret.index)
+		ops=[]
+		for (key,value) in kv.items():
+			xreq=schema_pb2.Op(
+					kv=schema_pb2.KeyValue(key=key, value=value)
+					)
+			ops.append(xreq)
+		request=schema_pb2.ExecAllRequest(
+			Operations=ops
+		)		
+		ret=self.__stub.ExecAll(request)
+		return types.LCIndex(id=ret.id)
 	
 	def _parseItemList(self,items):
 		values=[]
@@ -210,10 +203,14 @@ class Client:
 		return values
 
 	def getBatch(self, keys: list):
-		klist = [schema_pb2.Key(key=k) for k in keys]
-		request = schema_pb2.KeyList(keys=klist)
-		ret=self.__stub.GetBatch(request)
-		return self._parseItemList(ret.items)
+		request = schema_pb2.KeyListRequest(keys=keys)
+		ret=self.__stub.GetAll(request)
+		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
+	
+	def getValueBatch(self, keys: list):
+		request = schema_pb2.KeyListRequest(keys=keys)
+		ret=self.__stub.GetAll(request)
+		return [t.value for t in ret.entries]
 	
 	def scan(self, prefix:bytes, offset:bytes=b'', limit:int=0, reverse:bool=False, deep:bool=False):
 		request = schema_pb2.ScanOptions(
