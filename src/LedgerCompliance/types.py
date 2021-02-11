@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 
 @dataclass
-class LCRoot:
-	index: int
-	root: bytes
-	signature: bytes
-	publicKey: bytes
+class LCState:
+	db: str
+	txid: int
+	txhash: bytes
 	
 @dataclass
 class LCIndex:
@@ -35,14 +34,26 @@ class SafeSetResponse:
     
 @dataclass
 class SafeGetResponse:
-	index: int
-	key: bytes
-	value: bytes
-	timestamp: int
-	verified: bool
-	proof: Proof
+    id: int
+    key: bytes
+    value: bytes
+    timestamp: int
+    verified: bool
+    refkey: bytes
     
 @dataclass    
 class HealthInfo:
 	status: bool
 	version: str
+
+
+# exceptions
+class VerificationException(Exception):
+	pass
+
+class ErrMaxWidthExceeded(Exception):
+	pass
+
+class ErrIllegalArguments(Exception):
+	pass
+

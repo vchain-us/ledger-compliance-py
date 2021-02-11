@@ -18,63 +18,63 @@ class LcServiceStub(object):
         """
         self.Set = channel.unary_unary(
                 '/lc.schema.LcService/Set',
-                request_serializer=schema__pb2.KeyValue.SerializeToString,
-                response_deserializer=schema__pb2.Index.FromString,
+                request_serializer=schema__pb2.SetRequest.SerializeToString,
+                response_deserializer=schema__pb2.TxMetadata.FromString,
                 )
         self.Get = channel.unary_unary(
                 '/lc.schema.LcService/Get',
-                request_serializer=schema__pb2.Key.SerializeToString,
-                response_deserializer=schema__pb2.Item.FromString,
+                request_serializer=schema__pb2.KeyRequest.SerializeToString,
+                response_deserializer=schema__pb2.Entry.FromString,
                 )
-        self.SafeSet = channel.unary_unary(
-                '/lc.schema.LcService/SafeSet',
-                request_serializer=schema__pb2.SafeSetOptions.SerializeToString,
-                response_deserializer=schema__pb2.Proof.FromString,
+        self.VerifiableSet = channel.unary_unary(
+                '/lc.schema.LcService/VerifiableSet',
+                request_serializer=schema__pb2.VerifiableSetRequest.SerializeToString,
+                response_deserializer=schema__pb2.VerifiableTx.FromString,
                 )
-        self.SafeGet = channel.unary_unary(
-                '/lc.schema.LcService/SafeGet',
-                request_serializer=schema__pb2.SafeGetOptions.SerializeToString,
-                response_deserializer=schema__pb2.SafeItem.FromString,
+        self.VerifiableGet = channel.unary_unary(
+                '/lc.schema.LcService/VerifiableGet',
+                request_serializer=schema__pb2.VerifiableGetRequest.SerializeToString,
+                response_deserializer=schema__pb2.VerifiableEntry.FromString,
                 )
-        self.SetBatch = channel.unary_unary(
-                '/lc.schema.LcService/SetBatch',
-                request_serializer=schema__pb2.KVList.SerializeToString,
-                response_deserializer=schema__pb2.Index.FromString,
+        self.GetAll = channel.unary_unary(
+                '/lc.schema.LcService/GetAll',
+                request_serializer=schema__pb2.KeyListRequest.SerializeToString,
+                response_deserializer=schema__pb2.Entries.FromString,
                 )
-        self.GetBatch = channel.unary_unary(
-                '/lc.schema.LcService/GetBatch',
-                request_serializer=schema__pb2.KeyList.SerializeToString,
-                response_deserializer=schema__pb2.ItemList.FromString,
+        self.ExecAll = channel.unary_unary(
+                '/lc.schema.LcService/ExecAll',
+                request_serializer=schema__pb2.ExecAllRequest.SerializeToString,
+                response_deserializer=schema__pb2.TxMetadata.FromString,
                 )
         self.Scan = channel.unary_unary(
                 '/lc.schema.LcService/Scan',
-                request_serializer=schema__pb2.ScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.ItemList.FromString,
+                request_serializer=schema__pb2.ScanRequest.SerializeToString,
+                response_deserializer=schema__pb2.Entries.FromString,
                 )
         self.History = channel.unary_unary(
                 '/lc.schema.LcService/History',
-                request_serializer=schema__pb2.Key.SerializeToString,
-                response_deserializer=schema__pb2.ItemList.FromString,
+                request_serializer=schema__pb2.HistoryRequest.SerializeToString,
+                response_deserializer=schema__pb2.Entries.FromString,
                 )
         self.ZAdd = channel.unary_unary(
                 '/lc.schema.LcService/ZAdd',
-                request_serializer=schema__pb2.ZAddOptions.SerializeToString,
-                response_deserializer=schema__pb2.Index.FromString,
+                request_serializer=schema__pb2.ZAddRequest.SerializeToString,
+                response_deserializer=schema__pb2.TxMetadata.FromString,
                 )
-        self.SafeZAdd = channel.unary_unary(
-                '/lc.schema.LcService/SafeZAdd',
-                request_serializer=schema__pb2.SafeZAddOptions.SerializeToString,
-                response_deserializer=schema__pb2.Proof.FromString,
+        self.VerifiableZAdd = channel.unary_unary(
+                '/lc.schema.LcService/VerifiableZAdd',
+                request_serializer=schema__pb2.VerifiableZAddRequest.SerializeToString,
+                response_deserializer=schema__pb2.VerifiableTx.FromString,
                 )
         self.ZScan = channel.unary_unary(
                 '/lc.schema.LcService/ZScan',
-                request_serializer=schema__pb2.ZScanOptions.SerializeToString,
-                response_deserializer=schema__pb2.ItemList.FromString,
+                request_serializer=schema__pb2.ZScanRequest.SerializeToString,
+                response_deserializer=schema__pb2.ZEntries.FromString,
                 )
-        self.CurrentRoot = channel.unary_unary(
-                '/lc.schema.LcService/CurrentRoot',
+        self.CurrentState = channel.unary_unary(
+                '/lc.schema.LcService/CurrentState',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=schema__pb2.Root.FromString,
+                response_deserializer=schema__pb2.ImmutableState.FromString,
                 )
         self.Health = channel.unary_unary(
                 '/lc.schema.LcService/Health',
@@ -90,6 +90,21 @@ class LcServiceStub(object):
                 '/lc.schema.LcService/SendData',
                 request_serializer=lc__pb2.Data.SerializeToString,
                 response_deserializer=lc__pb2.Response.FromString,
+                )
+        self.VerifiableGetExt = channel.unary_unary(
+                '/lc.schema.LcService/VerifiableGetExt',
+                request_serializer=schema__pb2.VerifiableGetRequest.SerializeToString,
+                response_deserializer=lc__pb2.VerifiableItemExt.FromString,
+                )
+        self.ZScanExt = channel.unary_unary(
+                '/lc.schema.LcService/ZScanExt',
+                request_serializer=schema__pb2.ZScanRequest.SerializeToString,
+                response_deserializer=lc__pb2.ZItemExtList.FromString,
+                )
+        self.HistoryExt = channel.unary_unary(
+                '/lc.schema.LcService/HistoryExt',
+                request_serializer=schema__pb2.HistoryRequest.SerializeToString,
+                response_deserializer=lc__pb2.ItemExtList.FromString,
                 )
 
 
@@ -110,26 +125,26 @@ class LcServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SafeSet(self, request, context):
+    def VerifiableSet(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SafeGet(self, request, context):
+    def VerifiableGet(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SetBatch(self, request, context):
+    def GetAll(self, request, context):
         """batch
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetBatch(self, request, context):
+    def ExecAll(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -154,7 +169,7 @@ class LcServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SafeZAdd(self, request, context):
+    def VerifiableZAdd(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -166,7 +181,7 @@ class LcServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CurrentRoot(self, request, context):
+    def CurrentState(self, request, context):
         """mixed
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -192,68 +207,87 @@ class LcServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def VerifiableGetExt(self, request, context):
+        """ledger compliance extensions - items extended with additional properties managed by LC backend (date)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ZScanExt(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def HistoryExt(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_LcServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Set': grpc.unary_unary_rpc_method_handler(
                     servicer.Set,
-                    request_deserializer=schema__pb2.KeyValue.FromString,
-                    response_serializer=schema__pb2.Index.SerializeToString,
+                    request_deserializer=schema__pb2.SetRequest.FromString,
+                    response_serializer=schema__pb2.TxMetadata.SerializeToString,
             ),
             'Get': grpc.unary_unary_rpc_method_handler(
                     servicer.Get,
-                    request_deserializer=schema__pb2.Key.FromString,
-                    response_serializer=schema__pb2.Item.SerializeToString,
+                    request_deserializer=schema__pb2.KeyRequest.FromString,
+                    response_serializer=schema__pb2.Entry.SerializeToString,
             ),
-            'SafeSet': grpc.unary_unary_rpc_method_handler(
-                    servicer.SafeSet,
-                    request_deserializer=schema__pb2.SafeSetOptions.FromString,
-                    response_serializer=schema__pb2.Proof.SerializeToString,
+            'VerifiableSet': grpc.unary_unary_rpc_method_handler(
+                    servicer.VerifiableSet,
+                    request_deserializer=schema__pb2.VerifiableSetRequest.FromString,
+                    response_serializer=schema__pb2.VerifiableTx.SerializeToString,
             ),
-            'SafeGet': grpc.unary_unary_rpc_method_handler(
-                    servicer.SafeGet,
-                    request_deserializer=schema__pb2.SafeGetOptions.FromString,
-                    response_serializer=schema__pb2.SafeItem.SerializeToString,
+            'VerifiableGet': grpc.unary_unary_rpc_method_handler(
+                    servicer.VerifiableGet,
+                    request_deserializer=schema__pb2.VerifiableGetRequest.FromString,
+                    response_serializer=schema__pb2.VerifiableEntry.SerializeToString,
             ),
-            'SetBatch': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetBatch,
-                    request_deserializer=schema__pb2.KVList.FromString,
-                    response_serializer=schema__pb2.Index.SerializeToString,
+            'GetAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAll,
+                    request_deserializer=schema__pb2.KeyListRequest.FromString,
+                    response_serializer=schema__pb2.Entries.SerializeToString,
             ),
-            'GetBatch': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetBatch,
-                    request_deserializer=schema__pb2.KeyList.FromString,
-                    response_serializer=schema__pb2.ItemList.SerializeToString,
+            'ExecAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecAll,
+                    request_deserializer=schema__pb2.ExecAllRequest.FromString,
+                    response_serializer=schema__pb2.TxMetadata.SerializeToString,
             ),
             'Scan': grpc.unary_unary_rpc_method_handler(
                     servicer.Scan,
-                    request_deserializer=schema__pb2.ScanOptions.FromString,
-                    response_serializer=schema__pb2.ItemList.SerializeToString,
+                    request_deserializer=schema__pb2.ScanRequest.FromString,
+                    response_serializer=schema__pb2.Entries.SerializeToString,
             ),
             'History': grpc.unary_unary_rpc_method_handler(
                     servicer.History,
-                    request_deserializer=schema__pb2.Key.FromString,
-                    response_serializer=schema__pb2.ItemList.SerializeToString,
+                    request_deserializer=schema__pb2.HistoryRequest.FromString,
+                    response_serializer=schema__pb2.Entries.SerializeToString,
             ),
             'ZAdd': grpc.unary_unary_rpc_method_handler(
                     servicer.ZAdd,
-                    request_deserializer=schema__pb2.ZAddOptions.FromString,
-                    response_serializer=schema__pb2.Index.SerializeToString,
+                    request_deserializer=schema__pb2.ZAddRequest.FromString,
+                    response_serializer=schema__pb2.TxMetadata.SerializeToString,
             ),
-            'SafeZAdd': grpc.unary_unary_rpc_method_handler(
-                    servicer.SafeZAdd,
-                    request_deserializer=schema__pb2.SafeZAddOptions.FromString,
-                    response_serializer=schema__pb2.Proof.SerializeToString,
+            'VerifiableZAdd': grpc.unary_unary_rpc_method_handler(
+                    servicer.VerifiableZAdd,
+                    request_deserializer=schema__pb2.VerifiableZAddRequest.FromString,
+                    response_serializer=schema__pb2.VerifiableTx.SerializeToString,
             ),
             'ZScan': grpc.unary_unary_rpc_method_handler(
                     servicer.ZScan,
-                    request_deserializer=schema__pb2.ZScanOptions.FromString,
-                    response_serializer=schema__pb2.ItemList.SerializeToString,
+                    request_deserializer=schema__pb2.ZScanRequest.FromString,
+                    response_serializer=schema__pb2.ZEntries.SerializeToString,
             ),
-            'CurrentRoot': grpc.unary_unary_rpc_method_handler(
-                    servicer.CurrentRoot,
+            'CurrentState': grpc.unary_unary_rpc_method_handler(
+                    servicer.CurrentState,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=schema__pb2.Root.SerializeToString,
+                    response_serializer=schema__pb2.ImmutableState.SerializeToString,
             ),
             'Health': grpc.unary_unary_rpc_method_handler(
                     servicer.Health,
@@ -269,6 +303,21 @@ def add_LcServiceServicer_to_server(servicer, server):
                     servicer.SendData,
                     request_deserializer=lc__pb2.Data.FromString,
                     response_serializer=lc__pb2.Response.SerializeToString,
+            ),
+            'VerifiableGetExt': grpc.unary_unary_rpc_method_handler(
+                    servicer.VerifiableGetExt,
+                    request_deserializer=schema__pb2.VerifiableGetRequest.FromString,
+                    response_serializer=lc__pb2.VerifiableItemExt.SerializeToString,
+            ),
+            'ZScanExt': grpc.unary_unary_rpc_method_handler(
+                    servicer.ZScanExt,
+                    request_deserializer=schema__pb2.ZScanRequest.FromString,
+                    response_serializer=lc__pb2.ZItemExtList.SerializeToString,
+            ),
+            'HistoryExt': grpc.unary_unary_rpc_method_handler(
+                    servicer.HistoryExt,
+                    request_deserializer=schema__pb2.HistoryRequest.FromString,
+                    response_serializer=lc__pb2.ItemExtList.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -292,8 +341,8 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/Set',
-            schema__pb2.KeyValue.SerializeToString,
-            schema__pb2.Index.FromString,
+            schema__pb2.SetRequest.SerializeToString,
+            schema__pb2.TxMetadata.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -309,13 +358,13 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/Get',
-            schema__pb2.Key.SerializeToString,
-            schema__pb2.Item.FromString,
+            schema__pb2.KeyRequest.SerializeToString,
+            schema__pb2.Entry.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SafeSet(request,
+    def VerifiableSet(request,
             target,
             options=(),
             channel_credentials=None,
@@ -325,14 +374,14 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SafeSet',
-            schema__pb2.SafeSetOptions.SerializeToString,
-            schema__pb2.Proof.FromString,
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/VerifiableSet',
+            schema__pb2.VerifiableSetRequest.SerializeToString,
+            schema__pb2.VerifiableTx.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SafeGet(request,
+    def VerifiableGet(request,
             target,
             options=(),
             channel_credentials=None,
@@ -342,14 +391,14 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SafeGet',
-            schema__pb2.SafeGetOptions.SerializeToString,
-            schema__pb2.SafeItem.FromString,
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/VerifiableGet',
+            schema__pb2.VerifiableGetRequest.SerializeToString,
+            schema__pb2.VerifiableEntry.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SetBatch(request,
+    def GetAll(request,
             target,
             options=(),
             channel_credentials=None,
@@ -359,14 +408,14 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SetBatch',
-            schema__pb2.KVList.SerializeToString,
-            schema__pb2.Index.FromString,
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/GetAll',
+            schema__pb2.KeyListRequest.SerializeToString,
+            schema__pb2.Entries.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetBatch(request,
+    def ExecAll(request,
             target,
             options=(),
             channel_credentials=None,
@@ -376,9 +425,9 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/GetBatch',
-            schema__pb2.KeyList.SerializeToString,
-            schema__pb2.ItemList.FromString,
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ExecAll',
+            schema__pb2.ExecAllRequest.SerializeToString,
+            schema__pb2.TxMetadata.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -394,8 +443,8 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/Scan',
-            schema__pb2.ScanOptions.SerializeToString,
-            schema__pb2.ItemList.FromString,
+            schema__pb2.ScanRequest.SerializeToString,
+            schema__pb2.Entries.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -411,8 +460,8 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/History',
-            schema__pb2.Key.SerializeToString,
-            schema__pb2.ItemList.FromString,
+            schema__pb2.HistoryRequest.SerializeToString,
+            schema__pb2.Entries.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -428,13 +477,13 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ZAdd',
-            schema__pb2.ZAddOptions.SerializeToString,
-            schema__pb2.Index.FromString,
+            schema__pb2.ZAddRequest.SerializeToString,
+            schema__pb2.TxMetadata.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SafeZAdd(request,
+    def VerifiableZAdd(request,
             target,
             options=(),
             channel_credentials=None,
@@ -444,9 +493,9 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/SafeZAdd',
-            schema__pb2.SafeZAddOptions.SerializeToString,
-            schema__pb2.Proof.FromString,
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/VerifiableZAdd',
+            schema__pb2.VerifiableZAddRequest.SerializeToString,
+            schema__pb2.VerifiableTx.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -462,13 +511,13 @@ class LcService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ZScan',
-            schema__pb2.ZScanOptions.SerializeToString,
-            schema__pb2.ItemList.FromString,
+            schema__pb2.ZScanRequest.SerializeToString,
+            schema__pb2.ZEntries.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CurrentRoot(request,
+    def CurrentState(request,
             target,
             options=(),
             channel_credentials=None,
@@ -478,9 +527,9 @@ class LcService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/CurrentRoot',
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/CurrentState',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            schema__pb2.Root.FromString,
+            schema__pb2.ImmutableState.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -532,5 +581,56 @@ class LcService(object):
         return grpc.experimental.stream_stream(request_iterator, target, '/lc.schema.LcService/SendData',
             lc__pb2.Data.SerializeToString,
             lc__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def VerifiableGetExt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/VerifiableGetExt',
+            schema__pb2.VerifiableGetRequest.SerializeToString,
+            lc__pb2.VerifiableItemExt.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ZScanExt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/ZScanExt',
+            schema__pb2.ZScanRequest.SerializeToString,
+            lc__pb2.ZItemExtList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def HistoryExt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/lc.schema.LcService/HistoryExt',
+            schema__pb2.HistoryRequest.SerializeToString,
+            lc__pb2.ItemExtList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

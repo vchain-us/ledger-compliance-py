@@ -13,6 +13,7 @@ _sym_db = _symbol_database.Default()
 
 from . import schema_pb2 as schema__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -21,9 +22,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z4github.com/vchain-us/ledger-compliance/server/schema',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x08lc.proto\x12\tlc.schema\x1a\x0cschema.proto\x1a\x1bgoogle/protobuf/empty.proto\"8\n\x0cTamperReport\x12\r\n\x05index\x18\x01 \x01(\x04\x12\x0b\n\x03key\x18\x02 \x01(\x0c\x12\x0c\n\x04root\x18\x03 \x01(\x0c\"f\n\rReportOptions\x12(\n\x07payload\x18\x01 \x01(\x0b\x32\x17.lc.schema.TamperReport\x12+\n\tsignature\x18\x02 \x01(\x0b\x32\x18.immudb.schema.Signature\"6\n\tDataValue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\x0c\"f\n\x04\x44\x61ta\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05msgID\x18\x02 \x01(\x03\x12\x0e\n\x06\x64\x62Name\x18\x03 \x01(\t\x12\x11\n\ttableName\x18\x04 \x01(\t\x12\x11\n\toperation\x18\x05 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x06 \x01(\x0c\"~\n\x08Response\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\r\n\x05msgID\x18\x03 \x01(\x03\x12#\n\x05proof\x18\x04 \x01(\x0b\x32\x14.immudb.schema.Proof\x12!\n\x04root\x18\x05 \x01(\x0b\x32\x13.immudb.schema.Root2\xab\x07\n\tLcService\x12\x36\n\x03Set\x12\x17.immudb.schema.KeyValue\x1a\x14.immudb.schema.Index\"\x00\x12\x30\n\x03Get\x12\x12.immudb.schema.Key\x1a\x13.immudb.schema.Item\"\x00\x12@\n\x07SafeSet\x12\x1d.immudb.schema.SafeSetOptions\x1a\x14.immudb.schema.Proof\"\x00\x12\x43\n\x07SafeGet\x12\x1d.immudb.schema.SafeGetOptions\x1a\x17.immudb.schema.SafeItem\"\x00\x12\x39\n\x08SetBatch\x12\x15.immudb.schema.KVList\x1a\x14.immudb.schema.Index\"\x00\x12=\n\x08GetBatch\x12\x16.immudb.schema.KeyList\x1a\x17.immudb.schema.ItemList\"\x00\x12=\n\x04Scan\x12\x1a.immudb.schema.ScanOptions\x1a\x17.immudb.schema.ItemList\"\x00\x12\x38\n\x07History\x12\x12.immudb.schema.Key\x1a\x17.immudb.schema.ItemList\"\x00\x12:\n\x04ZAdd\x12\x1a.immudb.schema.ZAddOptions\x1a\x14.immudb.schema.Index\"\x00\x12\x42\n\x08SafeZAdd\x12\x1e.immudb.schema.SafeZAddOptions\x1a\x14.immudb.schema.Proof\"\x00\x12?\n\x05ZScan\x12\x1b.immudb.schema.ZScanOptions\x1a\x17.immudb.schema.ItemList\"\x00\x12<\n\x0b\x43urrentRoot\x12\x16.google.protobuf.Empty\x1a\x13.immudb.schema.Root\"\x00\x12\x41\n\x06Health\x12\x16.google.protobuf.Empty\x1a\x1d.immudb.schema.HealthResponse\"\x00\x12\x42\n\x0cReportTamper\x12\x18.lc.schema.ReportOptions\x1a\x16.google.protobuf.Empty\"\x00\x12\x34\n\x08SendData\x12\x0f.lc.schema.Data\x1a\x13.lc.schema.Response(\x01\x30\x01\x42\x36Z4github.com/vchain-us/ledger-compliance/server/schemab\x06proto3'
+  serialized_pb=b'\n\x08lc.proto\x12\tlc.schema\x1a\x0cschema.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"8\n\x0cTamperReport\x12\r\n\x05index\x18\x01 \x01(\x04\x12\x0b\n\x03key\x18\x02 \x01(\x0c\x12\x0c\n\x04root\x18\x03 \x01(\x0c\"f\n\rReportOptions\x12(\n\x07payload\x18\x01 \x01(\x0b\x32\x17.lc.schema.TamperReport\x12+\n\tsignature\x18\x02 \x01(\x0b\x32\x18.immudb.schema.Signature\"6\n\tDataValue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\x0c\"f\n\x04\x44\x61ta\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05msgID\x18\x02 \x01(\x03\x12\x0e\n\x06\x64\x62Name\x18\x03 \x01(\t\x12\x11\n\ttableName\x18\x04 \x01(\t\x12\x11\n\toperation\x18\x05 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x06 \x01(\x0c\"\x97\x01\n\x08Response\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\x0b\n\x03msg\x18\x02 \x01(\t\x12\r\n\x05msgID\x18\x03 \x01(\x03\x12\x31\n\x0cVerifiableTx\x18\x04 \x01(\x0b\x32\x1b.immudb.schema.VerifiableTx\x12,\n\x05state\x18\x05 \x01(\x0b\x32\x1d.immudb.schema.ImmutableState\"p\n\x11VerifiableItemExt\x12,\n\x04item\x18\x01 \x01(\x0b\x32\x1e.immudb.schema.VerifiableEntry\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\\\n\x07ItemExt\x12\"\n\x04item\x18\x01 \x01(\x0b\x32\x14.immudb.schema.Entry\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"0\n\x0bItemExtList\x12!\n\x05items\x18\x01 \x03(\x0b\x32\x12.lc.schema.ItemExt\"^\n\x08ZItemExt\x12#\n\x04item\x18\x01 \x01(\x0b\x32\x15.immudb.schema.ZEntry\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"2\n\x0cZItemExtList\x12\"\n\x05items\x18\x01 \x03(\x0b\x32\x13.lc.schema.ZItemExt2\x82\n\n\tLcService\x12=\n\x03Set\x12\x19.immudb.schema.SetRequest\x1a\x19.immudb.schema.TxMetadata\"\x00\x12\x38\n\x03Get\x12\x19.immudb.schema.KeyRequest\x1a\x14.immudb.schema.Entry\"\x00\x12S\n\rVerifiableSet\x12#.immudb.schema.VerifiableSetRequest\x1a\x1b.immudb.schema.VerifiableTx\"\x00\x12V\n\rVerifiableGet\x12#.immudb.schema.VerifiableGetRequest\x1a\x1e.immudb.schema.VerifiableEntry\"\x00\x12\x41\n\x06GetAll\x12\x1d.immudb.schema.KeyListRequest\x1a\x16.immudb.schema.Entries\"\x00\x12\x45\n\x07\x45xecAll\x12\x1d.immudb.schema.ExecAllRequest\x1a\x19.immudb.schema.TxMetadata\"\x00\x12<\n\x04Scan\x12\x1a.immudb.schema.ScanRequest\x1a\x16.immudb.schema.Entries\"\x00\x12\x42\n\x07History\x12\x1d.immudb.schema.HistoryRequest\x1a\x16.immudb.schema.Entries\"\x00\x12?\n\x04ZAdd\x12\x1a.immudb.schema.ZAddRequest\x1a\x19.immudb.schema.TxMetadata\"\x00\x12U\n\x0eVerifiableZAdd\x12$.immudb.schema.VerifiableZAddRequest\x1a\x1b.immudb.schema.VerifiableTx\"\x00\x12?\n\x05ZScan\x12\x1b.immudb.schema.ZScanRequest\x1a\x17.immudb.schema.ZEntries\"\x00\x12G\n\x0c\x43urrentState\x12\x16.google.protobuf.Empty\x1a\x1d.immudb.schema.ImmutableState\"\x00\x12\x41\n\x06Health\x12\x16.google.protobuf.Empty\x1a\x1d.immudb.schema.HealthResponse\"\x00\x12\x42\n\x0cReportTamper\x12\x18.lc.schema.ReportOptions\x1a\x16.google.protobuf.Empty\"\x00\x12\x36\n\x08SendData\x12\x0f.lc.schema.Data\x1a\x13.lc.schema.Response\"\x00(\x01\x30\x01\x12W\n\x10VerifiableGetExt\x12#.immudb.schema.VerifiableGetRequest\x1a\x1c.lc.schema.VerifiableItemExt\"\x00\x12\x42\n\x08ZScanExt\x12\x1b.immudb.schema.ZScanRequest\x1a\x17.lc.schema.ZItemExtList\"\x00\x12\x45\n\nHistoryExt\x12\x1d.immudb.schema.HistoryRequest\x1a\x16.lc.schema.ItemExtList\"\x00\x42\x36Z4github.com/vchain-us/ledger-compliance/server/schemab\x06proto3'
   ,
-  dependencies=[schema__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
+  dependencies=[schema__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
@@ -69,8 +70,8 @@ _TAMPERREPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=66,
-  serialized_end=122,
+  serialized_start=99,
+  serialized_end=155,
 )
 
 
@@ -108,8 +109,8 @@ _REPORTOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=124,
-  serialized_end=226,
+  serialized_start=157,
+  serialized_end=259,
 )
 
 
@@ -154,8 +155,8 @@ _DATAVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=228,
-  serialized_end=282,
+  serialized_start=261,
+  serialized_end=315,
 )
 
 
@@ -221,8 +222,8 @@ _DATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=284,
-  serialized_end=386,
+  serialized_start=317,
+  serialized_end=419,
 )
 
 
@@ -256,14 +257,14 @@ _RESPONSE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='proof', full_name='lc.schema.Response.proof', index=3,
+      name='VerifiableTx', full_name='lc.schema.Response.VerifiableTx', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='root', full_name='lc.schema.Response.root', index=4,
+      name='state', full_name='lc.schema.Response.state', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -281,19 +282,213 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=388,
-  serialized_end=514,
+  serialized_start=422,
+  serialized_end=573,
+)
+
+
+_VERIFIABLEITEMEXT = _descriptor.Descriptor(
+  name='VerifiableItemExt',
+  full_name='lc.schema.VerifiableItemExt',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='item', full_name='lc.schema.VerifiableItemExt.item', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='lc.schema.VerifiableItemExt.timestamp', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=575,
+  serialized_end=687,
+)
+
+
+_ITEMEXT = _descriptor.Descriptor(
+  name='ItemExt',
+  full_name='lc.schema.ItemExt',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='item', full_name='lc.schema.ItemExt.item', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='lc.schema.ItemExt.timestamp', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=689,
+  serialized_end=781,
+)
+
+
+_ITEMEXTLIST = _descriptor.Descriptor(
+  name='ItemExtList',
+  full_name='lc.schema.ItemExtList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='items', full_name='lc.schema.ItemExtList.items', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=783,
+  serialized_end=831,
+)
+
+
+_ZITEMEXT = _descriptor.Descriptor(
+  name='ZItemExt',
+  full_name='lc.schema.ZItemExt',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='item', full_name='lc.schema.ZItemExt.item', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='lc.schema.ZItemExt.timestamp', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=833,
+  serialized_end=927,
+)
+
+
+_ZITEMEXTLIST = _descriptor.Descriptor(
+  name='ZItemExtList',
+  full_name='lc.schema.ZItemExtList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='items', full_name='lc.schema.ZItemExtList.items', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=929,
+  serialized_end=979,
 )
 
 _REPORTOPTIONS.fields_by_name['payload'].message_type = _TAMPERREPORT
 _REPORTOPTIONS.fields_by_name['signature'].message_type = schema__pb2._SIGNATURE
-_RESPONSE.fields_by_name['proof'].message_type = schema__pb2._PROOF
-_RESPONSE.fields_by_name['root'].message_type = schema__pb2._ROOT
+_RESPONSE.fields_by_name['VerifiableTx'].message_type = schema__pb2._VERIFIABLETX
+_RESPONSE.fields_by_name['state'].message_type = schema__pb2._IMMUTABLESTATE
+_VERIFIABLEITEMEXT.fields_by_name['item'].message_type = schema__pb2._VERIFIABLEENTRY
+_VERIFIABLEITEMEXT.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ITEMEXT.fields_by_name['item'].message_type = schema__pb2._ENTRY
+_ITEMEXT.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ITEMEXTLIST.fields_by_name['items'].message_type = _ITEMEXT
+_ZITEMEXT.fields_by_name['item'].message_type = schema__pb2._ZENTRY
+_ZITEMEXT.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ZITEMEXTLIST.fields_by_name['items'].message_type = _ZITEMEXT
 DESCRIPTOR.message_types_by_name['TamperReport'] = _TAMPERREPORT
 DESCRIPTOR.message_types_by_name['ReportOptions'] = _REPORTOPTIONS
 DESCRIPTOR.message_types_by_name['DataValue'] = _DATAVALUE
 DESCRIPTOR.message_types_by_name['Data'] = _DATA
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
+DESCRIPTOR.message_types_by_name['VerifiableItemExt'] = _VERIFIABLEITEMEXT
+DESCRIPTOR.message_types_by_name['ItemExt'] = _ITEMEXT
+DESCRIPTOR.message_types_by_name['ItemExtList'] = _ITEMEXTLIST
+DESCRIPTOR.message_types_by_name['ZItemExt'] = _ZITEMEXT
+DESCRIPTOR.message_types_by_name['ZItemExtList'] = _ZITEMEXTLIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TamperReport = _reflection.GeneratedProtocolMessageType('TamperReport', (_message.Message,), {
@@ -331,6 +526,41 @@ Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Messag
   })
 _sym_db.RegisterMessage(Response)
 
+VerifiableItemExt = _reflection.GeneratedProtocolMessageType('VerifiableItemExt', (_message.Message,), {
+  'DESCRIPTOR' : _VERIFIABLEITEMEXT,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.VerifiableItemExt)
+  })
+_sym_db.RegisterMessage(VerifiableItemExt)
+
+ItemExt = _reflection.GeneratedProtocolMessageType('ItemExt', (_message.Message,), {
+  'DESCRIPTOR' : _ITEMEXT,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.ItemExt)
+  })
+_sym_db.RegisterMessage(ItemExt)
+
+ItemExtList = _reflection.GeneratedProtocolMessageType('ItemExtList', (_message.Message,), {
+  'DESCRIPTOR' : _ITEMEXTLIST,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.ItemExtList)
+  })
+_sym_db.RegisterMessage(ItemExtList)
+
+ZItemExt = _reflection.GeneratedProtocolMessageType('ZItemExt', (_message.Message,), {
+  'DESCRIPTOR' : _ZITEMEXT,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.ZItemExt)
+  })
+_sym_db.RegisterMessage(ZItemExt)
+
+ZItemExtList = _reflection.GeneratedProtocolMessageType('ZItemExtList', (_message.Message,), {
+  'DESCRIPTOR' : _ZITEMEXTLIST,
+  '__module__' : 'lc_pb2'
+  # @@protoc_insertion_point(class_scope:lc.schema.ZItemExtList)
+  })
+_sym_db.RegisterMessage(ZItemExtList)
+
 
 DESCRIPTOR._options = None
 
@@ -341,16 +571,16 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=517,
-  serialized_end=1456,
+  serialized_start=982,
+  serialized_end=2264,
   methods=[
   _descriptor.MethodDescriptor(
     name='Set',
     full_name='lc.schema.LcService.Set',
     index=0,
     containing_service=None,
-    input_type=schema__pb2._KEYVALUE,
-    output_type=schema__pb2._INDEX,
+    input_type=schema__pb2._SETREQUEST,
+    output_type=schema__pb2._TXMETADATA,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -359,48 +589,48 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     full_name='lc.schema.LcService.Get',
     index=1,
     containing_service=None,
-    input_type=schema__pb2._KEY,
-    output_type=schema__pb2._ITEM,
+    input_type=schema__pb2._KEYREQUEST,
+    output_type=schema__pb2._ENTRY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='SafeSet',
-    full_name='lc.schema.LcService.SafeSet',
+    name='VerifiableSet',
+    full_name='lc.schema.LcService.VerifiableSet',
     index=2,
     containing_service=None,
-    input_type=schema__pb2._SAFESETOPTIONS,
-    output_type=schema__pb2._PROOF,
+    input_type=schema__pb2._VERIFIABLESETREQUEST,
+    output_type=schema__pb2._VERIFIABLETX,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='SafeGet',
-    full_name='lc.schema.LcService.SafeGet',
+    name='VerifiableGet',
+    full_name='lc.schema.LcService.VerifiableGet',
     index=3,
     containing_service=None,
-    input_type=schema__pb2._SAFEGETOPTIONS,
-    output_type=schema__pb2._SAFEITEM,
+    input_type=schema__pb2._VERIFIABLEGETREQUEST,
+    output_type=schema__pb2._VERIFIABLEENTRY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='SetBatch',
-    full_name='lc.schema.LcService.SetBatch',
+    name='GetAll',
+    full_name='lc.schema.LcService.GetAll',
     index=4,
     containing_service=None,
-    input_type=schema__pb2._KVLIST,
-    output_type=schema__pb2._INDEX,
+    input_type=schema__pb2._KEYLISTREQUEST,
+    output_type=schema__pb2._ENTRIES,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='GetBatch',
-    full_name='lc.schema.LcService.GetBatch',
+    name='ExecAll',
+    full_name='lc.schema.LcService.ExecAll',
     index=5,
     containing_service=None,
-    input_type=schema__pb2._KEYLIST,
-    output_type=schema__pb2._ITEMLIST,
+    input_type=schema__pb2._EXECALLREQUEST,
+    output_type=schema__pb2._TXMETADATA,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -409,8 +639,8 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     full_name='lc.schema.LcService.Scan',
     index=6,
     containing_service=None,
-    input_type=schema__pb2._SCANOPTIONS,
-    output_type=schema__pb2._ITEMLIST,
+    input_type=schema__pb2._SCANREQUEST,
+    output_type=schema__pb2._ENTRIES,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -419,8 +649,8 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     full_name='lc.schema.LcService.History',
     index=7,
     containing_service=None,
-    input_type=schema__pb2._KEY,
-    output_type=schema__pb2._ITEMLIST,
+    input_type=schema__pb2._HISTORYREQUEST,
+    output_type=schema__pb2._ENTRIES,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -429,18 +659,18 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     full_name='lc.schema.LcService.ZAdd',
     index=8,
     containing_service=None,
-    input_type=schema__pb2._ZADDOPTIONS,
-    output_type=schema__pb2._INDEX,
+    input_type=schema__pb2._ZADDREQUEST,
+    output_type=schema__pb2._TXMETADATA,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='SafeZAdd',
-    full_name='lc.schema.LcService.SafeZAdd',
+    name='VerifiableZAdd',
+    full_name='lc.schema.LcService.VerifiableZAdd',
     index=9,
     containing_service=None,
-    input_type=schema__pb2._SAFEZADDOPTIONS,
-    output_type=schema__pb2._PROOF,
+    input_type=schema__pb2._VERIFIABLEZADDREQUEST,
+    output_type=schema__pb2._VERIFIABLETX,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -449,18 +679,18 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     full_name='lc.schema.LcService.ZScan',
     index=10,
     containing_service=None,
-    input_type=schema__pb2._ZSCANOPTIONS,
-    output_type=schema__pb2._ITEMLIST,
+    input_type=schema__pb2._ZSCANREQUEST,
+    output_type=schema__pb2._ZENTRIES,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='CurrentRoot',
-    full_name='lc.schema.LcService.CurrentRoot',
+    name='CurrentState',
+    full_name='lc.schema.LcService.CurrentState',
     index=11,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    output_type=schema__pb2._ROOT,
+    output_type=schema__pb2._IMMUTABLESTATE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
@@ -491,6 +721,36 @@ _LCSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_DATA,
     output_type=_RESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='VerifiableGetExt',
+    full_name='lc.schema.LcService.VerifiableGetExt',
+    index=15,
+    containing_service=None,
+    input_type=schema__pb2._VERIFIABLEGETREQUEST,
+    output_type=_VERIFIABLEITEMEXT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ZScanExt',
+    full_name='lc.schema.LcService.ZScanExt',
+    index=16,
+    containing_service=None,
+    input_type=schema__pb2._ZSCANREQUEST,
+    output_type=_ZITEMEXTLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='HistoryExt',
+    full_name='lc.schema.LcService.HistoryExt',
+    index=17,
+    containing_service=None,
+    input_type=schema__pb2._HISTORYREQUEST,
+    output_type=_ITEMEXTLIST,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
