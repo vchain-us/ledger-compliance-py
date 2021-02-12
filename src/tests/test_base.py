@@ -78,11 +78,18 @@ def test_double():
 		v=a.getValue(k)
 		assert kv[k]==v
 
-#def test_scan():
-	#a=mock_lc.MockClient(apikey,host,port,scure)
-	#kv={b"cat1": b"meow", b"cat2": b"purr"}
-	#a.setBatch(kv)
-	#a.scan(b"cat")
+def test_scan():
+	a=mock_lc.MockClient(apikey,host,port,scure)
+	a.testname("test_scan")
+	a.connect()
+	kv={b"CAT1": b"meow", b"CAT2": b"purr"}
+	tx=a.setBatch(kv)
+	scanback=a.scan(b'',b"CAT",sinceTx=tx.id)
+	assert len(scanback)==2
+	for i in scanback:
+		assert i.key in kv
+		assert kv[i.key]==i.value
+		assert i.tx==tx.id
 
 def test_history():
 	a=mock_lc.MockClient(apikey,host,port,scure)
