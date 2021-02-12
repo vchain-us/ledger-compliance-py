@@ -12,21 +12,23 @@ class MockServer(object):
         self.mode=mode
         self.realserver=realserver
         self.read_state()
+        self.testname=None
         
     def read_state(self):
         try:
-            with open("/tmp/mockserver.state","rb") as f:
+            with open("./.mockserver.state","rb") as f:
                 self.db=pickle.load(f)
         except:
             print("Initializing emtpy db")
             self.db={}
     def save_state(self):
-        with open("/tmp/mockserver.state","wb") as f:
+        with open("./.mockserver.state","wb") as f:
             pickle.dump(self.db,f)
             
     def calc_sig(self, methodname, args):
-        sig=methodname.encode('utf8')+b":"+args[0].SerializeToString()
-        signature=hashlib.sha256(base64.b64encode(sig)).hexdigest()
+        sig="{}:{}:".format(self.testname,methodname)
+        sig=sig.encode('utf8')+args[0].SerializeToString()
+        signature=hashlib.sha256(sig).hexdigest()
         return signature
     
     def __getattr__(self, methodname):
@@ -62,7 +64,14 @@ class MockClient(Client):
         Client.__init__(self, apikey, host, port, secure)
         self.mockserver=MockServer(MODE, self._Client__stub)
         self._Client__stub=self.mockserver
+        self._testname=None
+        
     def set_interceptor(self, apikey):
         t=Client.set_interceptor(self,apikey)
         self.mockserver=MockServer(MODE, t)
+        self.mockserver.testname=self._testname
         return self.mockserver
+    
+    def testname(self, name):
+        self._testname=name
+        self.mockserver.testname=name
