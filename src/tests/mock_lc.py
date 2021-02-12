@@ -7,6 +7,9 @@ from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
 MODE_REC=0
 MODE_PLAY=1
 
+
+MODE=MODE_PLAY
+
 class MockServer(object):
     def __init__(self, mode, realserver):
         self.mode=mode
@@ -15,12 +18,12 @@ class MockServer(object):
         self.testname=None
         
     def read_state(self):
+        self.db={}
         try:
             with open("./.mockserver.state","rb") as f:
                 self.db=pickle.load(f)
         except:
             print("Initializing emtpy db")
-            self.db={}
     def save_state(self):
         with open("./.mockserver.state","wb") as f:
             pickle.dump(self.db,f)
@@ -55,8 +58,6 @@ class MockServer(object):
             return rec_method
         else:
             return play_method
-
-MODE=MODE_PLAY
 
 from LedgerCompliance.client import Client
 class MockClient(Client):

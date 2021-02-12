@@ -61,6 +61,11 @@ def test_batch():
 	for k in kv.keys():
 		v=a.getValue(k)
 		assert kv[k]==v
+	resp=a.getValueBatch(kv.keys())
+	for i in resp.keys():
+		assert kv[i]==resp[i]
+	for i in kv.keys():
+		assert kv[i]==resp[i]
 		
 def test_double():
 	a=mock_lc.MockClient(apikey,host,port,scure)
@@ -98,14 +103,14 @@ def test_history():
 	a.set(b"gorilla",b"banana")
 	a.history(key=b"gorilla")
 
-#def test_z():
-	#a=mock_lc.MockClient(apikey,host,port,scure)
-	#a.zAdd(b"vanilla",10.0, b"gorilla",1)
-	#a.zScan(b"vanilla",None, 1, False)
-	#ret=a.safeZAdd(b"zoo",0.6,b"cobra",22)
-	#assert ret.verified==True
-	#ret=a.safeZAdd(b"zoo",0.6,b"cobra",None)
-	#assert ret.verified==False
+def test_z():
+	a=mock_lc.MockClient(apikey,host,port,scure)
+	a.testname("test_z")
+	a.connect()
+	a.zAdd(b"vanilla",10.0, b"gorilla")
+	a.zScan(b"vanilla",None, 1, False)
+	ret=a.verifiedZAdd(b"zoo",0.6,b"cobra")
+	assert ret.verified==True
 	
 #def test_tamper():
 	#a=mock_lc.MockClient(apikey,host,port,scure)

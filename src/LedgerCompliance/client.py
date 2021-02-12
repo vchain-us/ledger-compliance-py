@@ -196,7 +196,7 @@ class Client:
 	def getValueBatch(self, keys: list):
 		request = schema_pb2.KeyListRequest(keys=keys)
 		ret=self.__stub.GetAll(request)
-		return [t.value for t in ret.entries]
+		return {t.key:t.value for t in ret.entries}
 	
 	def scan(self, seekKey:bytes, prefix:bytes, desc:bool=False, limit:int=10, sinceTx:int=None, noWait:bool=False):
 		request = schema_pb2.ScanRequest(
