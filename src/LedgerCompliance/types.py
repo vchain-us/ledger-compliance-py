@@ -17,6 +17,13 @@ class LCItem:
 	value: bytes
 
 @dataclass
+class ZItem:
+	tx: int
+	key: bytes
+	value: bytes
+	score: float
+
+@dataclass
 class Proof:
 	index: bytes
 	leaf: bytes 

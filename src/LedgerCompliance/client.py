@@ -62,7 +62,6 @@ class Client:
 		)
 		return self.__rs
 		
-
 	def set(self, key: bytes, value: bytes):
 		request=schema_pb2.SetRequest(
 			KVs=[schema_pb2.KeyValue(key=key, value=value)]
@@ -109,7 +108,7 @@ class Client:
 		verifies = proofs.VerifyDualProof( proofs.DualProofFrom(verifiableTx.dualProof), sourceID, targetID, sourceAlh, targetAlh, )
 		if not verifies:
 			raise types.VerificationException
-		self.__rs.txid=targetID,
+		self.__rs.txid=targetID
 		self.__rs.txhash=targetAlh
 		return types.SafeSetResponse(
 			index=targetID,
@@ -189,19 +188,6 @@ class Client:
 		ret=self.__stub.ExecAll(request)
 		return types.LCIndex(id=ret.id)
 	
-	def _parseItemList(self,items):
-		values=[]
-		for r in items:
-			content=schema_pb2.Content()
-			content.ParseFromString(r.value)
-			values.append(types.LCItem(
-				key=r.key, 
-				value=content.payload, 
-				index=r.index, 
-				timestamp=content.timestamp
-			))
-		return values
-
 	def getBatch(self, keys: list):
 		request = schema_pb2.KeyListRequest(keys=keys)
 		ret=self.__stub.GetAll(request)
@@ -212,60 +198,90 @@ class Client:
 		ret=self.__stub.GetAll(request)
 		return [t.value for t in ret.entries]
 	
-	def scan(self, prefix:bytes, offset:bytes=b'', limit:int=0, reverse:bool=False, deep:bool=False):
-		request = schema_pb2.ScanOptions(
-			prefix=prefix,
-			offset=offset,
-			limit=limit,
-			reverse=reverse,
-			deep=deep
+	def scan(self, seekKey:bytes, prefix:bytes, desc:bool=False, limit:int=10, sinceTx:int=None, noWait:bool=False):
+		request = schema_pb2.ScanRequest(
+			seekKey = seekKey ,
+			prefix = prefix, 
+			desc = desc, 
+			limit = limit, 
+			sinceTx = sinceTx,
+			noWait = noWait
 			)
 		ret=self.__stub.Scan(request)
-		return self._parseItemList(ret.items)
+		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
 	
-	def history(self, key: bytes):
-		request = schema_pb2.Key(key=key)
+	def history(self, key: bytes, offset:int=0, limit:int=10, desc:bool=False, sinceTx:int=0):
+		request = schema_pb2.HistoryRequest(
+			key=key, offset=offset, limit=limit, desc=desc, sinceTx=sinceTx)
 		ret=self.__stub.History(request)
-		return self._parseItemList(ret.items)
+		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
 	
-	def zAdd(self, zset:bytes, score:float, key:bytes, index:int):
-		scor=schema_pb2.Score(score=score)
-		idx=schema_pb2.Index(index=index)
-		request = schema_pb2.ZAddOptions(set=zset, score=scor, key=key, index=idx)
+	def zAdd(self, zset:bytes, score:float, key:bytes, atTx:int=0):
+		request = schema_pb2.ZAddRequest(set=zset, score=score, key=key, atTx=atTx,
+				   boundRef=atTx>0)
 		ret= self.__stub.ZAdd(request)
-		return types.LCIndex(index=ret.index)
+		return types.LCIndex(id=ret.id)
 	
-	def safeZAdd(self, zset:bytes, score:float, key:bytes, index:int=None):
-		if index!=None:
-			idx=schema_pb2.Index(index=index)
+	def verifiedZAdd(self, zset:bytes, score:float, key:bytes, atTx:int=0):
+		request=schema_pb2.VerifiableZAddRequest(
+			zAddRequest=schema_pb2.ZAddRequest(
+			set=      zset,
+			score=    score,
+			key=      key,
+			atTx=     atTx,
+			),
+			proveSinceTx=self.__rs.txid
+			)
+		vtx = self.__stub.VerifiableZAdd(request)
+		if vtx.tx.metadata.nentries!=1:
+			raise VerificationException
+		tx = proofs.TxFrom(vtx.tx)
+		ekv = proofs.EncodeZAdd(zset, score, key, atTx)
+		inclusionProof=tx.Proof(ekv.key)
+		verifies = proofs.VerifyInclusion(inclusionProof, ekv.Digest(), tx.eh())
+		if not verifies:
+			raise VerificationException
+		if tx.eh() != proofs.DigestFrom(vtx.dualProof.targetTxMetadata.eH):
+			raise VerificationException
+		if self.__rs.txid == 0:
+			sourceID = tx.ID
+			sourceAlh = tx.Alh
 		else:
-			idx=None
-		scor=schema_pb2.Score(score=score)
-		opt = schema_pb2.ZAddOptions(set=zset, score=scor, key=key, index=idx)
-		rootindex=schema_pb2.Index(index=self.__rs.index)
-		request = schema_pb2.SafeZAddOptions(zopts=opt, rootIndex=rootindex)
-		msg= self.__stub.SafeZAdd(request) # msg type is "Proof"
-		#print("MSG:",msg,"/MSG")
-		# message verification
-		key2=utils.build_set_key(key, zset, score, idx)
-		value=utils.wrap_zindex_ref(key, idx)
-		digest = proofs.digest(msg.index, key2, value)
-		verified = proofs.verify(msg, digest, self.__rs)
-		
-		if verified:
-			# Update root
-			self.__rs=schema_pb2.RootIndex(index=msg.at, root=msg.root)
-		proof=self._mkProof(msg)
+			sourceID = self.__rs.txid
+			sourceAlh = proofs.DigestFrom(self.__rs.txhash)
+		targetID = tx.ID
+		targetAlh = tx.Alh
+		verifies = proofs.VerifyDualProof(
+			proofs.DualProofFrom(vtx.dualProof),
+			sourceID,
+			targetID,
+			sourceAlh,
+			targetAlh,
+		)
+		if not verifies:
+			raise VerificationException
+
+		self.__rs.txid=targetID
+		self.__rs.txhash=targetAlh
 		return types.SafeSetResponse(
-			index=msg.index,
-			proof=proof,
-			verified=verified
+			index=targetID,
+			verified=verifies,
+			proof=targetAlh,
 		)
 	
-	def zScan(self, zset: bytes, offset: bytes, limit: int, reverse:bool):
-		request=schema_pb2.ZScanOptions(set=zset, offset=offset, limit=limit, reverse=reverse)
+	def zScan(self, zset:bytes, seekKey:bytes, seekScore:float, 
+			inclusiveSeek:bool=False, seekAtTx:int=0, limit:int=10, desc:bool=False,
+			minScore:float=None, maxScore:float=None, sinceTx:int=0, noWait:bool=False):
+		
+		request=schema_pb2.ZScanRequest(set=zset, seekKey=seekKey, seekScore=seekScore,
+				  seekAtTx=seekAtTx, inclusiveSeek=inclusiveSeek, limit=limit, desc=desc,
+				  minScore=schema_pb2.Score(score=minScore),
+				  maxScore=schema_pb2.Score(score=maxScore), 
+				  sinceTx=sinceTx, noWait=noWait)
+				  
 		ret=self.__stub.ZScan(request)
-		return self._parseItemList(ret.items)
+		print(ret)
+		return [types.ZItem(key=t.entry.key, value=t.entry.value, tx=t.entry.tx, score=t.score) for t in ret.entries]
 	
 	def reportTamper(self, index:int, key:bytes, signature:bytes=None, publickey:bytes=None):
 		report=lc_pb2.TamperReport(index=index, key=key, root=self.__rs.root)
