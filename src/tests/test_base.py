@@ -13,25 +13,21 @@ def test_zero():
 	a.connect()
 	a.currentState()
 
-	
-#def test_connect():
-	#a=mock_lc.MockClient(apikey,host,port,secure=False)
-	#a=mock_lc.MockClient(apikey,host,port,secure=True)
-	#a.set_credentials()
-	#try:
-		#a.connect()
-	#except grpc._channel._InactiveRpcError as e:
-		#pass
-	#a.InterceptInterceptor()
-	#a.connect()
-	
+def test_connect():
+	a=mock_lc.MockClient(apikey,host,port,secure=True)
+	a.testname("test_connect")
+	a.set_credentials()
+	a=mock_lc.MockClient(apikey,host,port,secure=False)
+	a.testname("test_connect")
+	a.connect()
+
 def test_health():
 	a=mock_lc.MockClient(apikey,host,port,scure)
 	a.testname("test_health")
 	a.connect()
 	h=a.health()
 	assert h.status
-	
+
 def test_get_set():
 	a=mock_lc.MockClient(apikey,host,port,scure)
 	a.testname("test_set_get")
@@ -39,7 +35,7 @@ def test_get_set():
 	a.set(b"gorilla",b"banana")
 	resp=a.get(b"gorilla")
 	assert resp.value==b"banana"
-	
+
 def test_verifiedSetGet():
 	a=mock_lc.MockClient(apikey,host,port,scure)
 	a.testname("test_verifiedSetGet")
@@ -48,7 +44,6 @@ def test_verifiedSetGet():
 	resp=a.verifiedGet(b"gorilla")
 	assert resp.verified
 
-	
 def test_batch():
 	a=mock_lc.MockClient(apikey,host,port,scure)
 	a.testname("test_batch")
@@ -66,7 +61,7 @@ def test_batch():
 		assert kv[i]==resp[i]
 	for i in kv.keys():
 		assert kv[i]==resp[i]
-		
+
 def test_double():
 	a=mock_lc.MockClient(apikey,host,port,scure)
 	a.testname("test_double")
@@ -111,8 +106,21 @@ def test_z():
 	a.zScan(b"vanilla",None, 1, False)
 	ret=a.verifiedZAdd(b"zoo",0.6,b"cobra")
 	assert ret.verified==True
-	
+
+def test_concurrent():
+	a=mock_lc.MockClient(apikey,host,port,scure)
+	a.testname("test_za")
+	a.connect()
+	b=mock_lc.MockClient(apikey,host,port,scure)
+	b.testname("test_zb")
+	b.connect()
+	xset=a.set(b'gorilla',b'banana')
+	b.set(b'clientname',b'client_b')
+	b.set(b'clientid',b'client_b')
+	xget=a.verifiedGet(b'gorilla')
+	assert xget.id==xset.id
 #def test_tamper():
-	#a=mock_lc.MockClient(apikey,host,port,scure)
-	#a.reportTamper(0,b'123',b'123',b'123')
-	
+#	a=mock_lc.MockClient(apikey,host,port,scure)
+#	a.testname("test_tamper")
+#	a.reportTamper(0,b'123',b'123',b'123')
+

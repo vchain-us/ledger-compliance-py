@@ -3,6 +3,7 @@
 import hashlib,base64,pickle
 from google.protobuf import message
 from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
+import gzip
 
 MODE_REC=0
 MODE_PLAY=1
@@ -20,12 +21,22 @@ class MockServer(object):
     def read_state(self):
         self.db={}
         try:
-            with open("./.mockserver.state","rb") as f:
+            with gzip.open("./.mockserver.state","rb") as f:
                 self.db=pickle.load(f)
         except:
             print("Initializing emtpy db")
+            
     def save_state(self):
-        with open("./.mockserver.state","wb") as f:
+        # merge old db from disk with new db from memory
+        # (needed when using 2 client concurrently)
+        olddb={}
+        try:
+            with gzip.open("./.mockserver.state","rb") as f:
+                olddb=pickle.load(f)
+        except:
+            print("Initializing emtpy db")
+        self.db=dict(self.db, **olddb)
+        with gzip.open("./.mockserver.state","wb") as f:
             pickle.dump(self.db,f)
             
     def calc_sig(self, methodname, args):
