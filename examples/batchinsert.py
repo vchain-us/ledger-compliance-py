@@ -3,6 +3,7 @@
 API="acpkrvlnhttowqmraisvzndfiyojsoymgcdy"
 HOST="172.31.255.10"
 PORT=80
+SECURE=False
 BATCHSIZE=500
 NUM=120
 
@@ -11,7 +12,7 @@ import string
 import random
 import time
 
-cli=LedgerCompliance.client.Client(API, HOST, PORT,False)
+cli=LedgerCompliance.client.Client(API, HOST, PORT, SECURE)
 cli.connect()
 
 def get_random_string(length):

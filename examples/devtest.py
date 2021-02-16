@@ -4,9 +4,9 @@ import LedgerCompliance.client
 
 apikey="jaxozystagmmfalupyttvlqxyuwawgdtldsd"
 host="172.31.255.10"
-port=3324
-
-a=LedgerCompliance.client.Client(apikey,host,port)
+port=80
+tls=False
+a=LedgerCompliance.client.Client(apikey,host,port,tls) 
 print(a.connect())
 
 print(a.set(b"gorilla",b"banana"))

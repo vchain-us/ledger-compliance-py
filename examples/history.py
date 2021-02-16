@@ -2,14 +2,15 @@
 
 API="qervegelclrmbvcdhpvvmebpnyxgjknysayt"
 HOST="172.31.255.30"
-PORT=3324
+PORT=80
+SECURE=False
 
 import LedgerCompliance.client
 import string
 import random
 import time
 
-cli=LedgerCompliance.client.Client(API, HOST, PORT)
+cli=LedgerCompliance.client.Client(API, HOST, PORT, SECURE)
 cli.connect()
 
 def get_random_string(length):

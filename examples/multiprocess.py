@@ -2,7 +2,8 @@
 
 API="ridkvqszuhezqlluamnhqihagjbuudfmxtht"
 HOST="172.31.255.10"
-PORT=3324
+PORT=80
+SECURE=FALSE
 NUM=100
 
 import LedgerCompliance.client
@@ -18,7 +19,7 @@ def get_random_string(length):
     return ret
 
 def worker(rep):
-	cli=LedgerCompliance.client.Client(API, HOST, PORT)
+	cli=LedgerCompliance.client.Client(API, HOST, PORT, SECURE)
 	cli.connect()
 	for i in range(0,rep):
 		msg_key="KEY_"+get_random_string(8)
