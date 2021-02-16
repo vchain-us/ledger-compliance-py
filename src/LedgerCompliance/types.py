@@ -8,39 +8,30 @@ class LCState:
 	
 @dataclass
 class LCIndex:
-	id: int
+	txid: int
 	
 @dataclass
 class LCItem:
-	tx: int
+	txid: int
 	key: bytes
 	value: bytes
 
 @dataclass
 class ZItem:
-	tx: int
+	txid: int
 	key: bytes
 	value: bytes
 	score: float
 
-@dataclass
-class Proof:
-	index: bytes
-	leaf: bytes 
-	root: bytes
-	at: int
-	inclusionPath: bytes
-	consistencyPath: bytes
     
 @dataclass
 class SafeSetResponse:
-	index: int
+	txid: int
 	verified: bool
-	proof: Proof
     
 @dataclass
 class SafeGetResponse:
-    id: int
+    txid: int
     key: bytes
     value: bytes
     timestamp: int

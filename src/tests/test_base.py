@@ -41,6 +41,7 @@ def test_verifiedSetGet():
 	a.testname("test_verifiedSetGet")
 	a.connect()
 	resp=a.verifiedSet(b"dodge",b"viper")
+	resp=a.verifiedGet(b"dodge",resp.txid)
 	resp=a.verifiedGet(b"gorilla")
 	assert resp.verified
 
@@ -84,12 +85,12 @@ def test_scan():
 	a.connect()
 	kv={b"CAT1": b"meow", b"CAT2": b"purr"}
 	tx=a.setBatch(kv)
-	scanback=a.scan(b'',b"CAT",sinceTx=tx.id)
+	scanback=a.scan(b'',b"CAT",sinceTx=tx.txid)
 	assert len(scanback)==2
 	for i in scanback:
 		assert i.key in kv
 		assert kv[i.key]==i.value
-		assert i.tx==tx.id
+		assert i.txid==tx.txid
 
 def test_history():
 	a=mock_lc.MockClient(apikey,host,port,scure)
@@ -118,7 +119,7 @@ def test_concurrent():
 	b.set(b'clientname',b'client_b')
 	b.set(b'clientid',b'client_b')
 	xget=a.verifiedGet(b'gorilla')
-	assert xget.id==xset.id
+	assert xget.txid==xset.txid
 #def test_tamper():
 #	a=mock_lc.MockClient(apikey,host,port,scure)
 #	a.testname("test_tamper")

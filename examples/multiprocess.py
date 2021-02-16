@@ -23,8 +23,8 @@ def worker(rep):
 	for i in range(0,rep):
 		msg_key="KEY_"+get_random_string(8)
 		msg_val="VALUE_"+get_random_string(random.randint(50,1000))
-		cli.safeSet(msg_key.encode(),msg_val.encode())
-		res=cli.safeGet(msg_key.encode())
+		cli.verifiedSet(msg_key.encode(),msg_val.encode())
+		res=cli.verifiedGet(msg_key.encode())
 		assert res.verified
 
 proclist=[]

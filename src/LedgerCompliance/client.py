@@ -67,12 +67,12 @@ class Client:
 			KVs=[schema_pb2.KeyValue(key=key, value=value)]
 		)
 		ret = self.__stub.Set(request)
-		return types.LCIndex(id=ret.id)
+		return types.LCIndex(txid=ret.id)
 	
 	def get(self, key:bytes) -> types.LCIndex:
 		request = schema_pb2.Key(key=key)
 		ret=self.__stub.Get(request)
-		return types.LCItem(key=ret.key, value=ret.value, tx=ret.tx)
+		return types.LCItem(key=ret.key, value=ret.value, txid=ret.tx)
 	
 	def getValue(self, key:bytes) -> bytes:
 		request = schema_pb2.Key(key=key)
@@ -111,9 +111,8 @@ class Client:
 		self.__rs.txid=targetID
 		self.__rs.txhash=targetAlh
 		return types.SafeSetResponse(
-			index=targetID,
+			txid=targetID,
 			verified=verifies,
-			proof=targetAlh,
 		)
 	
 	def verifiedGet(self, requestkey: bytes, atTx:int=None):
@@ -164,7 +163,7 @@ class Client:
 		else:
 			refkey=None
 		return types.SafeGetResponse(
-			id=vTx,
+			txid=vTx,
 			key=ventry.entry.key,
 			value=ventry.entry.value,
 			timestamp=ventry.verifiableTx.tx.metadata.ts,
@@ -186,12 +185,12 @@ class Client:
 			Operations=ops
 		)		
 		ret=self.__stub.ExecAll(request)
-		return types.LCIndex(id=ret.id)
+		return types.LCIndex(txid=ret.id)
 	
 	def getBatch(self, keys: list):
 		request = schema_pb2.KeyListRequest(keys=keys)
 		ret=self.__stub.GetAll(request)
-		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
+		return [types.LCItem(key=t.key, value=t.value, txid=t.tx) for t in ret.entries]
 	
 	def getValueBatch(self, keys: list):
 		request = schema_pb2.KeyListRequest(keys=keys)
@@ -208,19 +207,19 @@ class Client:
 			noWait = noWait
 			)
 		ret=self.__stub.Scan(request)
-		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
+		return [types.LCItem(key=t.key, value=t.value, txid=t.tx) for t in ret.entries]
 	
 	def history(self, key: bytes, offset:int=0, limit:int=10, desc:bool=False, sinceTx:int=0):
 		request = schema_pb2.HistoryRequest(
 			key=key, offset=offset, limit=limit, desc=desc, sinceTx=sinceTx)
 		ret=self.__stub.History(request)
-		return [types.LCItem(key=t.key, value=t.value, tx=t.tx) for t in ret.entries]
+		return [types.LCItem(key=t.key, value=t.value, txid=t.tx) for t in ret.entries]
 	
 	def zAdd(self, zset:bytes, score:float, key:bytes, atTx:int=0):
 		request = schema_pb2.ZAddRequest(set=zset, score=score, key=key, atTx=atTx,
 				   boundRef=atTx>0)
 		ret= self.__stub.ZAdd(request)
-		return types.LCIndex(id=ret.id)
+		return types.LCIndex(txid=ret.id)
 	
 	def verifiedZAdd(self, zset:bytes, score:float, key:bytes, atTx:int=0):
 		request=schema_pb2.VerifiableZAddRequest(
@@ -264,9 +263,8 @@ class Client:
 		self.__rs.txid=targetID
 		self.__rs.txhash=targetAlh
 		return types.SafeSetResponse(
-			index=targetID,
+			txid=targetID,
 			verified=verifies,
-			proof=targetAlh,
 		)
 	
 	def zScan(self, zset:bytes, seekKey:bytes, seekScore:float, 
@@ -281,7 +279,7 @@ class Client:
 				  
 		ret=self.__stub.ZScan(request)
 		print(ret)
-		return [types.ZItem(key=t.entry.key, value=t.entry.value, tx=t.entry.tx, score=t.score) for t in ret.entries]
+		return [types.ZItem(key=t.entry.key, value=t.entry.value, txid=t.entry.tx, score=t.score) for t in ret.entries]
 	
 	def reportTamper(self, index:int, key:bytes, signature:bytes=None, publickey:bytes=None):
 		report=lc_pb2.TamperReport(index=index, key=key, root=self.__rs.root)

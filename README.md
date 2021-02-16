@@ -19,17 +19,28 @@ verifications and state update protocol implementation are fully implemented by 
 A Ledger Compliance instance must be up and running. You need IP address, port (usually 80) of the Ledger Compliance grpc service.
 You'll also need an API key, which can easly be generated within the Ledger Compliance.
 
-This library only run with python3, and it's tested with python 3.8.
+This library only run with python3, and it's tested with python 3.8. This library requires the dataclasses module, which is part of the basic python library starting with python 3.7. You can still use python 3.6 if you install the dataclasses pypi module.
 
 ## Installation
+
+### Using PYPI:
+
+You can easily install ledger-compliance-py using pip:
+```python
+pip install ledger-compliance-py
+```
+
+### From source:
 
 A Makefile is provided. To install the library, simply clone the repository, change to the **src** directory and launch
 ```make init``` to install (via pip) all the needed dependencies, followed by a ```make install``` to install the library.
 A python virtual environment is raccomanded.
 
+
 ## Supported Versions
 
-TBD
+This version supports CodeNotary Ledger Compliance version 2.1.5+
+Use python 3.7+, or python 3.6 with dataclasses module.
 
 ## Quickstart
 
@@ -81,29 +92,40 @@ retrieve the data:
 client.set(b"key", b"value")
 value=client.get(b"key")
 ```
-Please note that the value is serialized with a timestamp, so you can always tell when the insert was made.
+Here ```value``` is a dataclass holding informations extracted from the database: the trasaction id, its key (useful when you ask for a reference) and of course the value. If you just need the value of a key, you can use ```getValue``` method which just retrieve the value.
 
 ### Encoding
 To avoid encoding issues, both key and value are byte array, not string. You have to ```encode``` the data before writing and ```decode``` after reading.
 
-### Safe read/write
+### Verified read/write
 
-The real strength of the Ledger Compliance is the proof that the data is not been tampered. The ''safe'' version of ```get``` and ```set``` are designed 
+The real strength of the Ledger Compliance is the proof that the data is not been tampered.
+The ''verified'' version of ```get``` and ```set``` are designed 
 to verify, client side, the proof returned by the server.
 
-To safely store a key/value pair, simply call the ```safeSet``` method. The returned value has a field (called ```verified```) which testify the 
-correctness of the insert. In the same way, the ```safeGet``` guarantees that the returned data has not been tampered with.
+To safely store a key/value pair, simply call the ```verifiedSet``` method.
+The returned value has a field (called ```verified```) which testify the 
+correctness of the insert. Actually, the SDK computes, client side, all the merkele tree hashes that the server computed
+when inserting, and then matches the results.
+So the appliaction has the proof that the server insert was made without tampering.
+In the same way, the ```verifiedGet``` guarantees that the returned data has not been tampered with.
 
 ```python
-resp=client.safeSet(b"key,  b"value")
+resp=client.verifiedSet(b"key",  b"value")
 if resp.verified:
-    print("Data correctly stored ad index:",resp.index)
-    print("Proof is:",resp.proof)
+    print("Data correctly stored at transaction:",resp.txid)
  
- resp=client.safeGet(b"key")
- if resp.verified:
-    print("Value is:",resp.value,"at index:",resp.index)
-    print("Proof is:",resp.proof)
+resp=client.verifiedGet(b"key")
+if resp.verified:
+    print("Value is:",resp.value,"at transaction:",resp.txid)
+```
+Since indexing process is asynchronous, inserted values can be unavailable until indexed.
+If you know the transaction id in which the key is contained, you can specify that value in the verifiedGet. The call will
+block until that transaction is indexed so that the value can be safely retrieved:
+
+```python
+resp=client.verifiedSet(b"key",  b"value")
+resp=client.verifiedGet(b"key", resp.txid)
 ```
 
 ### Batch set/get
@@ -124,14 +146,16 @@ To retrieve multiple values, populate an array with wanted keys, then call getBa
 keys=[b"key1", b"key2"]
 client.getBatch(keys)
 ```
+As with simple (not batched) get, you get a dataclass holding the key and the transaction for each requested key.
+You can use getValueBatch if you just want back the vaules: it returns a dictionary of key holding the corrisponding values.
 
 ### Scan
 You can scan LC database by prefix, getting keys (and values) based on a given prefix of the key. For this, use method scan.
 
 ```python
-client.scan(prefix, offset, limit, reverse, deep)
+client.scan(seekKey, prefix, desc, limit, sinceTx, noWait)
 ```
-The method return a list of key/values having `prefix` as key prefix. Offset and limit are used to ket only a subset (for paginating large arrays); the boolean reverse is used to specify sorting.
+The method return a list of key/values/tx having `prefix` as key prefix, starting from `seekKey`. seekkey and limit are used to ket only a subset (for paginating large arrays); the boolean `desc` is used to specify descending ordering.
 
 ### History
 

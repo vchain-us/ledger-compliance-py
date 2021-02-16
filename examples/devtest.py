@@ -12,5 +12,5 @@ print(a.connect())
 print(a.set(b"gorilla",b"banana"))
 print(a.get(b"gorilla"))
 
-print(a.safeSet(b"happy",b"hippo"))
-print(a.safeGet(b"happy"))
+print(a.verifiedSet(b"happy",b"hippo"))
+print(a.verifiedGet(b"happy"))

@@ -27,7 +27,7 @@ for i in range(0,NUM):
 print("Starting insert")
 t0=time.time()
 for i in range(0,NUM):
-	cli.safeSet(manyvalues[i][0],manyvalues[i][1])
+	cli.verifiedSet(manyvalues[i][0],manyvalues[i][1])
 t1=time.time()
 if t1!=t0:
 	insert_sec=NUM/(t1-t0)
