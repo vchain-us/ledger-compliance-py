@@ -1,12 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class LCState:
-	db: str
-	txid: int
-	txhash: bytes
-	
-@dataclass
 class LCIndex:
 	txid: int
 	

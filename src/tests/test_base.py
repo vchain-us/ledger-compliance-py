@@ -2,7 +2,7 @@ from . import mock_lc
 import pytest
 import grpc
 
-apikey="dwquppzqfqgvvzpfledoldopkxuhiciicupa"
+apikey="bzlmqybrgezwarnnkkrypkmthkrvmsolranb"
 host="172.31.255.10"
 port=33080
 scure=False
@@ -105,7 +105,7 @@ def test_z():
 	a.connect()
 	a.zAdd(b"vanilla",10.0, b"gorilla")
 	a.zScan(b"vanilla",None, 1, False)
-	ret=a.verifiedZAdd(b"zoo",0.6,b"cobra")
+	ret=a.verifiedZAdd(b"zoo",0.6,b"gorilla")
 	assert ret.verified==True
 
 def test_concurrent():

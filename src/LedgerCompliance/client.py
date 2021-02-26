@@ -7,7 +7,7 @@ from LedgerCompliance.schema.schema_pb2_grpc import schema__pb2 as schema_pb2
 from LedgerCompliance.schema.lc_pb2_grpc import lc__pb2 as lc_pb2
 
 from LedgerCompliance import header_manipulator_client_interceptor as interceptor
-from . import types, proofs, utils, constants
+from . import types, proofs, utils, constants, stateservice
 import time
 
 class Client:
@@ -49,18 +49,25 @@ class Client:
 				"channel has been shutdown") from e
 		return lc.LcServiceStub(self.intercept_channel)
 	
-	def connect(self):
+	def connect(self, rs=None):
 		self.__stub=self.set_interceptor(self.apikey)
+		if rs!=None:
+			self.__rs=rs
+		else:
+			self.__rs=stateservice.RootService(self.apikey)
 		return self.currentState()
 	
 	def currentState(self):
-		resp=self.__stub.CurrentState(empty_request.Empty())
-		self.__rs=types.LCState(
-			db=resp.db,
-			txid=resp.txId,
-			txhash=resp.txHash
-		)
-		return self.__rs
+		state=self.__rs.get()
+		if state==None:
+			resp=self.__stub.CurrentState(empty_request.Empty())
+			state=stateservice.LCState(
+				db=resp.db,
+				txid=resp.txId,
+				txhash=resp.txHash
+				)
+			self.__rs.set(state)
+		return state
 		
 	def set(self, key: bytes, value: bytes):
 		request=schema_pb2.SetRequest(
@@ -80,11 +87,12 @@ class Client:
 		return ret.value
 
 	def verifiedSet(self, key: bytes, value: bytes):
+		state=self.currentState()
 		# print(base64.b64encode(state.SerializeToString()))
 		kv = schema_pb2.KeyValue(key=key, value=value)
 		rawRequest = schema_pb2.VerifiableSetRequest(
 			setRequest = schema_pb2.SetRequest(KVs=[kv]),
-			proveSinceTx= self.__rs.txid,
+			proveSinceTx= state.txid,
 		)
 		verifiableTx = self.__stub.VerifiableSet(rawRequest)
 		# print(base64.b64encode(verifiableTx.SerializeToString()))
@@ -96,35 +104,37 @@ class Client:
 			raise types.VerificationException
 		if tx.eh() != proofs.DigestFrom(verifiableTx.dualProof.targetTxMetadata.eH):
 			raise types.VerificationException
-		if self.__rs.txid == 0:
+		if state.txid == 0:
 			sourceID = tx.ID
 			sourceAlh = tx.Alh
 		else:
-			sourceID = self.__rs.txid
-			sourceAlh = proofs.DigestFrom(self.__rs.txhash)
+			sourceID = state.txid
+			sourceAlh = proofs.DigestFrom(state.txhash)
 		targetID = tx.ID
 		targetAlh = tx.Alh
 
 		verifies = proofs.VerifyDualProof( proofs.DualProofFrom(verifiableTx.dualProof), sourceID, targetID, sourceAlh, targetAlh, )
 		if not verifies:
 			raise types.VerificationException
-		self.__rs.txid=targetID
-		self.__rs.txhash=targetAlh
+		state.txid=targetID
+		state.txhash=targetAlh
+		self.__rs.set(state)
 		return types.SafeSetResponse(
 			txid=targetID,
 			verified=verifies,
 		)
 	
 	def verifiedGet(self, requestkey: bytes, atTx:int=None):
+		state=self.currentState()
 		if atTx==None:
 			req = schema_pb2.VerifiableGetRequest(
 			keyRequest= schema_pb2.KeyRequest(key=requestkey),
-			proveSinceTx= self.__rs.txid
+			proveSinceTx= state.txid
 			)
 		else:
 			req = schema_pb2.VerifiableGetRequest(
 			keyRequest= schema_pb2.KeyRequest(key=requestkey, atTx=atTx),
-			proveSinceTx= self.__rs.txid
+			proveSinceTx= state.txid
 			)
 		ventry=self.__stub.VerifiableGet(req)
 		inclusionProof = proofs.InclusionProofFrom(ventry.inclusionProof)
@@ -137,18 +147,18 @@ class Client:
 			vTx = ventry.entry.referencedBy.tx
 			kv=proofs.EncodeReference(ventry.entry.referencedBy.key, ventry.entry.key, ventry.entry.referencedBy.atTx) 
 			
-		if self.__rs.txid <= vTx:
+		if state.txid <= vTx:
 			eh=proofs.DigestFrom(ventry.verifiableTx.dualProof.targetTxMetadata.eH)
-			sourceid=self.__rs.txid
-			sourcealh=proofs.DigestFrom(self.__rs.txhash)
+			sourceid=state.txid
+			sourcealh=proofs.DigestFrom(state.txhash)
 			targetid=vTx
 			targetalh=dualProof.targetTxMetadata.alh()
 		else:
 			eh=proofs.DigestFrom(ventry.verifiableTx.dualProof.sourceTxMetadata.eH)
 			sourceid=vTx
 			sourcealh=dualProof.sourceTxMetadata.alh()
-			targetid=self.__rs.txid
-			targetalh=proofs.DigestFrom(self.__rs.txhash)
+			targetid=state.txid
+			targetalh=proofs.DigestFrom(state.txhash)
 			
 		verifies = proofs.VerifyInclusion(inclusionProof,kv.Digest(),eh)
 		if not verifies:
@@ -156,8 +166,9 @@ class Client:
 		verifies=proofs.VerifyDualProof( dualProof, sourceid, targetid, sourcealh, targetalh)
 		if not verifies:
 			raise VerificationException
-		self.__rs.txid=targetid
-		self.__rs.txhash=targetalh
+		state.txid=targetid
+		state.txhash=targetalh
+		self.__rs.set(state)
 		if ventry.entry.referencedBy!=None and ventry.entry.referencedBy.key!=b'':
 			refkey=ventry.entry.referencedBy.key
 		else:
@@ -222,6 +233,7 @@ class Client:
 		return types.LCIndex(txid=ret.id)
 	
 	def verifiedZAdd(self, zset:bytes, score:float, key:bytes, atTx:int=0):
+		state=self.currentState()
 		request=schema_pb2.VerifiableZAddRequest(
 			zAddRequest=schema_pb2.ZAddRequest(
 			set=      zset,
@@ -229,7 +241,7 @@ class Client:
 			key=      key,
 			atTx=     atTx,
 			),
-			proveSinceTx=self.__rs.txid
+			proveSinceTx=state.txid
 			)
 		vtx = self.__stub.VerifiableZAdd(request)
 		if vtx.tx.metadata.nentries!=1:
@@ -242,12 +254,12 @@ class Client:
 			raise VerificationException
 		if tx.eh() != proofs.DigestFrom(vtx.dualProof.targetTxMetadata.eH):
 			raise VerificationException
-		if self.__rs.txid == 0:
+		if state.txid == 0:
 			sourceID = tx.ID
 			sourceAlh = tx.Alh
 		else:
-			sourceID = self.__rs.txid
-			sourceAlh = proofs.DigestFrom(self.__rs.txhash)
+			sourceID = state.txid
+			sourceAlh = proofs.DigestFrom(state.txhash)
 		targetID = tx.ID
 		targetAlh = tx.Alh
 		verifies = proofs.VerifyDualProof(
@@ -260,8 +272,9 @@ class Client:
 		if not verifies:
 			raise VerificationException
 
-		self.__rs.txid=targetID
-		self.__rs.txhash=targetAlh
+		state.txid=targetID
+		state.txhash=targetAlh
+		self.__rs.set(state)
 		return types.SafeSetResponse(
 			txid=targetID,
 			verified=verifies,
@@ -282,7 +295,8 @@ class Client:
 		return [types.ZItem(key=t.entry.key, value=t.entry.value, txid=t.entry.tx, score=t.score) for t in ret.entries]
 	
 	def reportTamper(self, index:int, key:bytes, signature:bytes=None, publickey:bytes=None):
-		report=lc_pb2.TamperReport(index=index, key=key, root=self.__rs.root)
+		state=self.currentState()
+		report=lc_pb2.TamperReport(index=index, key=key, root=state.root)
 		signature=schema_pb2.Signature(signature=signature, publicKey=publickey)
 		request=lc_pb2.ReportOptions(payload=report, signature=signature)
 		self.__stub.ReportTamper(request)
