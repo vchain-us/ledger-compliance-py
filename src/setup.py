@@ -6,7 +6,7 @@ with open("../README.md", "rt") as fh:
     long_description = fh.read()
 
 setup(name='ledger-compliance-py',
-      version='2.1.5-rc2',
+      version='2.1.5-rc3',
       description='Python SDK for codenotary Ledger Compliance',
       long_description=long_description,
       long_description_content_type="text/markdown",

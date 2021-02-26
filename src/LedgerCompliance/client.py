@@ -54,7 +54,8 @@ class Client:
 		if rs!=None:
 			self.__rs=rs
 		else:
-			self.__rs=stateservice.RootService(self.apikey)
+			self.__rs=stateservice.RootService()
+		self.__rs.use(self.apikey)
 		return self.currentState()
 	
 	def currentState(self):
