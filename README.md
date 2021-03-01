@@ -163,6 +163,48 @@ To get the history of updates to a key, use `history` method: given a key, retur
 ```python
 print(client.History(b"key1"))
 ```
+## State persistance
 
-### Multithreading / multiprocessing
+An important LC feature is the ability for a client to check every transaction for tampering. In order to 
+be able to do that, it is necessary to persist client state (i.e., save it to disk) so that if some tampering 
+on the server happens between two runs, it is immediatly detected.
+
+A `RootService` implements just that: it stores immudb client after every transaction, in order to be able to
+use it afterward to check the server correctness.
+
+### Using the Persistent Root Service
+
+The default RootService, for simplicity, commits the state to RAM, and so it is unsuitable for real time safe
+application. To have persistance, the application must instantiate a `PersistentRootService` object, which stores
+its state to disk, and use it in the `connect` method.
+
+Let's see a simple example that uses state persistance:
+
+```python
+from LedgerCompliance.stateservice import PersistentRootService
+from LedgerCompliance import client as LCClient
+client=LCClient(apikey,host,port)
+client.connect(PersistentRootService())
+client.verifiedGet(b"example")
+```
+
+In this example, the Root Service is saved to the disk after every verified transaction. As you can see, it is very
+easy to use. Just create and use the PersistentRootService object in the client connection.
+
+### Process and threads
+
+Please keep in mind that the implementation is not thread/process safe. If you are using a multi-process application,
+it is advisable to use a different state file for every instance: just pass the filename as argument to the 
+PersistentRootService constructor:
+
+```python
+client.connect(PersistentRootService("statefilename"))
+```
+
+Default rootfile is "~/.cnlcRoot"
+
+If needed/wanted, it is also easy to extend the default implementation adding synchronization primitives to the get/set methods.
+In this way, more than one immudb client can share the same PersistentRootService instance without interering each other.
+
+## Multithreading / multiprocessing
 The library is not reentrant. If used in a multiprocess application, each running process must have its own instance.
